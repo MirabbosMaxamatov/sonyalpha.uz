@@ -1,0 +1,2446 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sony Alpha — Rasmiy Do'kon | Toshkent</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --black: #0a0a0a;
+            --white: #f5f4f0;
+            --red: #cc1e1e;
+            --red-dark: #991515;
+            --g1: #1a1a1a;
+            --g2: #2a2a2a;
+            --g3: #3d3d3d;
+            --g4: #666;
+            --g5: #999;
+            --g6: #ccc;
+            --accent: #e8d5b7;
+            --font-d: 'Bebas Neue', sans-serif;
+            --font-b: 'DM Sans', sans-serif;
+            --font-m: 'DM Mono', monospace;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font-b);
+            font-weight: 300;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* cursor */
+        .cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--red);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform .15s, background .2s;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            width: 36px;
+            height: 36px;
+            border: 1px solid rgba(204, 30, 30, .5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform .35s, width .3s, height .3s;
+            transform: translate(-50%, -50%);
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--red);
+        }
+
+        /* ── PAGE SYSTEM ── */
+        .page {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 64px;
+            background: rgba(10, 10, 10, .92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--g1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--red);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-d);
+            font-size: 16px;
+            color: white;
+        }
+
+        .logo-text {
+            font-family: var(--font-d);
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .logo-text span {
+            color: var(--red);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        nav a {
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--g5);
+            text-decoration: none;
+            transition: color .2s;
+            cursor: none;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--red);
+            transform: scaleX(0);
+            transition: transform .3s;
+        }
+
+        nav a:hover,
+        nav a.nav-active {
+            color: var(--white);
+        }
+
+        nav a:hover::after,
+        nav a.nav-active::after {
+            transform: scaleX(1);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .cart-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: var(--red);
+            border: none;
+            border-radius: 3px;
+            color: white;
+            font-family: var(--font-b);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: none;
+            transition: background .2s;
+        }
+
+        .cart-btn:hover {
+            background: var(--red-dark);
+        }
+
+        .cart-badge {
+            background: white;
+            color: var(--red);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .search-btn {
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: 1px solid var(--g2);
+            border-radius: 3px;
+            color: var(--g5);
+            cursor: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color .2s, color .2s;
+        }
+
+        .search-btn:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        /* ── SHARED UTILS ── */
+        .btn-primary {
+            padding: 12px 28px;
+            background: var(--red);
+            color: white;
+            border: none;
+            font-family: var(--font-b);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: none;
+            text-decoration: none;
+            transition: background .2s, transform .15s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            background: var(--red-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-ghost {
+            padding: 12px 28px;
+            background: transparent;
+            color: var(--g5);
+            border: 1px solid var(--g3);
+            font-family: var(--font-b);
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: none;
+            text-decoration: none;
+            transition: border-color .2s, color .2s;
+            display: inline-block;
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--white);
+            color: var(--white);
+        }
+
+        .section-eyebrow {
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: var(--font-d);
+            font-size: clamp(36px, 5vw, 68px);
+            line-height: .95;
+            letter-spacing: 2px;
+        }
+
+        /* fade-in */
+        .fi {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity .7s, transform .7s;
+        }
+
+        .fi.v {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* ─────────────────────────────────────────
+   HOME PAGE
+───────────────────────────────────────── */
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding-top: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 70% 50%, rgba(204, 30, 30, .08), transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px 60px 80px 80px;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--red);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 32px;
+            height: 1px;
+            background: var(--red);
+        }
+
+        .hero-title {
+            font-family: var(--font-d);
+            font-size: clamp(72px, 9vw, 128px);
+            line-height: .9;
+            letter-spacing: 2px;
+            margin-bottom: 28px;
+        }
+
+        .hero-title .r {
+            color: var(--red);
+        }
+
+        .hero-title .g {
+            color: var(--g4);
+            font-size: .5em;
+            letter-spacing: 8px;
+        }
+
+        .hero-desc {
+            font-size: 14px;
+            color: var(--g5);
+            max-width: 360px;
+            line-height: 1.8;
+            margin-bottom: 44px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 44px;
+            margin-top: 60px;
+            padding-top: 36px;
+            border-top: 1px solid var(--g1);
+        }
+
+        .stat-num {
+            font-family: var(--font-d);
+            font-size: 40px;
+            line-height: 1;
+            letter-spacing: 2px;
+        }
+
+        .stat-num span {
+            color: var(--red);
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--g4);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .hero-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-camera-bg {
+            width: 480px;
+            height: 480px;
+            border: 1px solid var(--g1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotRing 20s linear infinite;
+            position: absolute;
+        }
+
+        .hero-camera-bg::before {
+            content: '';
+            position: absolute;
+            inset: 30px;
+            border: 1px dashed var(--g2);
+            border-radius: 50%;
+            animation: rotRing 12s linear infinite reverse;
+        }
+
+        @keyframes rotRing {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-svg {
+            position: relative;
+            z-index: 2;
+            animation: floatCam 4s ease-in-out infinite;
+        }
+
+        @keyframes floatCam {
+
+            0%,
+            100% {
+                transform: translateY(0)
+            }
+
+            50% {
+                transform: translateY(-14px)
+            }
+        }
+
+        .hero-lbl {
+            position: absolute;
+            font-family: var(--font-m);
+            font-size: 10px;
+            color: var(--g4);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-lbl::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--g4);
+        }
+
+        .hl1 {
+            top: 34%;
+            right: 60px
+        }
+
+        .hl2 {
+            bottom: 38%;
+            left: 60px
+        }
+
+        .hl3 {
+            top: 56%;
+            right: 55px
+        }
+
+        /* MARQUEE */
+        .marquee-section {
+            overflow: hidden;
+            border-top: 1px solid var(--g1);
+            border-bottom: 1px solid var(--g1);
+            background: var(--g1);
+            padding: 13px 0;
+        }
+
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: marquee 22s linear infinite;
+        }
+
+        @keyframes marquee {
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 0 40px;
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .mdot {
+            width: 4px;
+            height: 4px;
+            background: var(--red);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* CATEGORIES */
+        .categories-section {
+            padding: 90px 80px;
+        }
+
+        .sec-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 56px;
+        }
+
+        .see-all {
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            text-decoration: none;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color .2s;
+            cursor: none;
+        }
+
+        .see-all:hover {
+            color: var(--white);
+        }
+
+        .cat-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 270px 270px;
+            gap: 2px;
+        }
+
+        .cat-card {
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            background: var(--g1);
+        }
+
+        .cat-card:first-child {
+            grid-row: span 2;
+        }
+
+        .cat-card-bg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform .6s;
+        }
+
+        .cat-card:hover .cat-card-bg {
+            transform: scale(1.05);
+        }
+
+        .cat-card-inner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 28px;
+            background: linear-gradient(to top, rgba(0, 0, 0, .8), transparent 50%);
+            transition: background .4s;
+        }
+
+        .cat-card:hover .cat-card-inner {
+            background: linear-gradient(to top, rgba(180, 20, 20, .65), transparent 60%);
+        }
+
+        .cat-num {
+            font-family: var(--font-m);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            margin-bottom: 6px;
+        }
+
+        .cat-title {
+            font-family: var(--font-d);
+            font-size: 26px;
+            letter-spacing: 1px;
+            margin-bottom: 3px;
+        }
+
+        .cat-card:first-child .cat-title {
+            font-size: 40px;
+        }
+
+        .cat-sub {
+            font-size: 11px;
+            color: var(--g5);
+            letter-spacing: .5px;
+        }
+
+        .cat-arrow {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 34px;
+            height: 34px;
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--g4);
+            transform: rotate(45deg);
+            transition: all .3s;
+        }
+
+        .cat-card:hover .cat-arrow {
+            border-color: white;
+            color: white;
+            background: var(--red);
+        }
+
+        /* PRODUCTS */
+        .products-section {
+            padding: 0 80px 90px;
+        }
+
+        .prod-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--g1);
+            margin-bottom: 44px;
+        }
+
+        .tab-btn {
+            padding: 13px 28px;
+            background: transparent;
+            border: none;
+            color: var(--g4);
+            font-family: var(--font-b);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: none;
+            position: relative;
+            transition: color .2s;
+        }
+
+        .tab-btn.active {
+            color: var(--white);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--red);
+        }
+
+        .tab-btn:hover {
+            color: var(--g6);
+        }
+
+        .prod-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2px;
+        }
+
+        .prod-card {
+            background: var(--g1);
+            cursor: none;
+            position: relative;
+            overflow: hidden;
+            transition: transform .3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prod-card:hover {
+            transform: translateY(-4px);
+            z-index: 2;
+        }
+
+        .prod-img {
+            height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--g2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prod-img svg {
+            transition: transform .4s;
+        }
+
+        .prod-card:hover .prod-img svg {
+            transform: scale(1.08);
+        }
+
+        .prod-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 3px 9px;
+            font-family: var(--font-m);
+            font-size: 9px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 2px;
+        }
+
+        .badge-new {
+            background: var(--red);
+            color: white;
+        }
+
+        .badge-top {
+            background: var(--accent);
+            color: var(--black);
+        }
+
+        .prod-info {
+            padding: 18px 18px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prod-name {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.4;
+            margin-bottom: 5px;
+        }
+
+        .prod-model {
+            font-family: var(--font-m);
+            font-size: 9px;
+            color: var(--g4);
+            letter-spacing: 1px;
+            margin-bottom: 14px;
+        }
+
+        .prod-footer {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+
+        .prod-price-lbl {
+            font-size: 9px;
+            color: var(--g5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .prod-price {
+            font-family: var(--font-d);
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .prod-add {
+            width: 34px;
+            height: 34px;
+            background: transparent;
+            border: 1px solid var(--g3);
+            border-radius: 2px;
+            color: var(--g4);
+            cursor: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s;
+            flex-shrink: 0;
+        }
+
+        .prod-add:hover {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+        }
+
+        /* PROMO */
+        .promo {
+            margin: 0 80px 90px;
+            background: var(--g1);
+        }
+
+        .promo-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 320px;
+        }
+
+        .promo-left {
+            padding: 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--g2);
+        }
+
+        .promo-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid var(--red);
+            color: var(--red);
+            font-family: var(--font-m);
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            width: fit-content;
+        }
+
+        .promo-title {
+            font-family: var(--font-d);
+            font-size: 52px;
+            line-height: .95;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .promo-title em {
+            color: var(--red);
+            font-style: normal;
+        }
+
+        .promo-desc {
+            font-size: 13px;
+            color: var(--g5);
+            margin-bottom: 28px;
+            line-height: 1.8;
+            max-width: 300px;
+        }
+
+        .promo-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-bg-text {
+            position: absolute;
+            font-family: var(--font-d);
+            font-size: 160px;
+            color: rgba(255, 255, 255, .03);
+            letter-spacing: -5px;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* INFO */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            margin: 0 80px 90px;
+        }
+
+        .info-card {
+            background: var(--g1);
+            padding: 36px;
+            transition: background .3s;
+        }
+
+        .info-card:hover {
+            background: var(--g2);
+        }
+
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--g3);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--red);
+        }
+
+        .info-title {
+            font-family: var(--font-d);
+            font-size: 22px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .info-desc {
+            font-size: 13px;
+            color: var(--g5);
+            line-height: 1.8;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--g1);
+            padding: 56px 80px 36px;
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 44px;
+            margin-bottom: 52px;
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: var(--g5);
+            line-height: 1.8;
+            max-width: 260px;
+            margin-top: 16px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--g2);
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--g4);
+            text-decoration: none;
+            transition: all .2s;
+            font-family: var(--font-m);
+            font-size: 10px;
+            cursor: none;
+        }
+
+        .social-link:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-d);
+            font-size: 17px;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 9px;
+        }
+
+        .footer-col ul li a {
+            font-size: 12px;
+            color: var(--g5);
+            text-decoration: none;
+            transition: color .2s;
+            cursor: none;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 28px;
+            border-top: 1px solid var(--g1);
+        }
+
+        .footer-copy {
+            font-size: 11px;
+            color: var(--g4);
+        }
+
+        .footer-loc {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-m);
+            font-size: 11px;
+            color: var(--g4);
+        }
+
+        .loc-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        /* ─────────────────────────────────────────
+   CATEGORY PAGE (list of products)
+───────────────────────────────────────── */
+        .cat-page-hero {
+            padding: 120px 80px 60px;
+            border-bottom: 1px solid var(--g1);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            text-transform: uppercase;
+            cursor: none;
+            background: none;
+            border: none;
+            transition: color .2s;
+            margin-bottom: 32px;
+        }
+
+        .back-btn:hover {
+            color: var(--white);
+        }
+
+        .cat-page-title {
+            font-family: var(--font-d);
+            font-size: clamp(52px, 7vw, 100px);
+            line-height: .9;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .cat-page-sub {
+            font-size: 13px;
+            color: var(--g5);
+            max-width: 480px;
+            line-height: 1.8;
+        }
+
+        .cat-prod-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            padding: 2px 80px 80px;
+        }
+
+        /* ─────────────────────────────────────────
+   NEWS PAGE (list)
+───────────────────────────────────────── */
+        .news-list {
+            padding: 120px 80px 80px;
+        }
+
+        .news-list-title {
+            font-family: var(--font-d);
+            font-size: clamp(52px, 7vw, 100px);
+            line-height: .9;
+            letter-spacing: 2px;
+            margin-bottom: 56px;
+        }
+
+        .news-items {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .news-item {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            background: var(--g1);
+            cursor: none;
+            overflow: hidden;
+            transition: background .3s;
+            min-height: 200px;
+        }
+
+        .news-item:hover {
+            background: var(--g2);
+        }
+
+        .news-item-img {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-item-img img,
+        .news-item-img .img-placeholder {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform .5s;
+        }
+
+        .news-item:hover .news-item-img img,
+        .news-item:hover .news-item-img .img-placeholder {
+            transform: scale(1.06);
+        }
+
+        .img-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--g2);
+        }
+
+        .news-item-body {
+            padding: 32px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .news-date {
+            font-family: var(--font-m);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--red);
+            margin-bottom: 12px;
+        }
+
+        .news-item-title {
+            font-family: var(--font-d);
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .news-item-excerpt {
+            font-size: 13px;
+            color: var(--g5);
+            line-height: 1.8;
+            max-width: 560px;
+        }
+
+        .news-arrow {
+            margin-top: 18px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-m);
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            text-transform: uppercase;
+            transition: color .2s;
+        }
+
+        .news-item:hover .news-arrow {
+            color: var(--red);
+        }
+
+        /* ─────────────────────────────────────────
+   NEWS DETAIL PAGE
+───────────────────────────────────────── */
+        .news-detail {
+            padding-top: 64px;
+        }
+
+        .news-detail-hero {
+            width: 100%;
+            max-height: 60vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .news-detail-hero img,
+        .news-detail-hero .hero-img-placeholder {
+            width: 100%;
+            height: 60vh;
+            object-fit: cover;
+            display: block;
+        }
+
+        .hero-img-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .news-detail-content {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 60px 40px 100px;
+        }
+
+        .news-detail-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--g4);
+            text-transform: uppercase;
+            cursor: none;
+            background: none;
+            border: none;
+            transition: color .2s;
+            margin-bottom: 36px;
+        }
+
+        .news-detail-back:hover {
+            color: var(--white);
+        }
+
+        .news-detail-date {
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--red);
+            margin-bottom: 16px;
+        }
+
+        .news-detail-title {
+            font-family: var(--font-d);
+            font-size: clamp(40px, 5vw, 72px);
+            line-height: .95;
+            letter-spacing: 2px;
+            margin-bottom: 32px;
+        }
+
+        .news-detail-body {
+            font-size: 15px;
+            color: var(--g6);
+            line-height: 1.9;
+        }
+
+        .news-detail-body p {
+            margin-bottom: 20px;
+        }
+
+        .news-detail-body h3 {
+            font-family: var(--font-d);
+            font-size: 30px;
+            letter-spacing: 1px;
+            color: var(--white);
+            margin: 36px 0 14px;
+        }
+
+        .news-detail-body ul {
+            margin: 0 0 20px 20px;
+            color: var(--g6);
+        }
+
+        .news-detail-body ul li {
+            margin-bottom: 8px;
+        }
+
+        /* ─────────────────────────────────────────
+   ABOUT / CONTACT PAGE
+───────────────────────────────────────── */
+        .about-page {
+            padding-top: 64px;
+        }
+
+        .about-hero {
+            padding: 80px;
+            background: var(--g1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-title {
+            font-family: var(--font-d);
+            font-size: clamp(48px, 6vw, 90px);
+            line-height: .95;
+            letter-spacing: 2px;
+        }
+
+        .about-title span {
+            color: var(--red);
+        }
+
+        .about-desc {
+            font-size: 15px;
+            color: var(--g5);
+            line-height: 1.9;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            padding: 60px 80px;
+        }
+
+        .contact-card {
+            background: var(--g1);
+            padding: 40px;
+        }
+
+        .contact-card h3 {
+            font-family: var(--font-d);
+            font-size: 22px;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .contact-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        .contact-icon {
+            color: var(--red);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .contact-val {
+            color: var(--g5);
+            line-height: 1.6;
+        }
+
+        .contact-val strong {
+            color: var(--white);
+            font-weight: 500;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .map-placeholder {
+            background: var(--g2);
+            border: 1px solid var(--g3);
+            border-radius: 4px;
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 24px;
+            color: var(--g4);
+            font-family: var(--font-m);
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+
+        /* ─────────────────────────────────────────
+   FAQ PAGE
+───────────────────────────────────────── */
+        .faq-page {
+            padding: 120px 80px 80px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-page-title {
+            font-family: var(--font-d);
+            font-size: clamp(48px, 6vw, 80px);
+            letter-spacing: 2px;
+            margin-bottom: 48px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--g1);
+        }
+
+        .faq-q {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-family: var(--font-b);
+            font-size: 14px;
+            font-weight: 500;
+            text-align: left;
+            padding: 20px 0;
+            cursor: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .faq-q span {
+            line-height: 1.5;
+        }
+
+        .faq-chevron {
+            flex-shrink: 0;
+            color: var(--red);
+            transition: transform .3s;
+        }
+
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .4s ease, padding .3s;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 300px;
+            padding-bottom: 20px;
+        }
+
+        .faq-a p {
+            font-size: 13px;
+            color: var(--g5);
+            line-height: 1.9;
+        }
+
+        /* ─────────────────────────────────────────
+   AKTSIYALAR PAGE
+───────────────────────────────────────── */
+        .sale-page {
+            padding: 120px 80px 80px;
+        }
+
+        .sale-page-title {
+            font-family: var(--font-d);
+            font-size: clamp(48px, 6vw, 90px);
+            letter-spacing: 2px;
+            margin-bottom: 56px;
+        }
+
+        .sale-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+        }
+
+        .sale-card {
+            background: var(--g1);
+            overflow: hidden;
+            cursor: none;
+            transition: background .3s;
+        }
+
+        .sale-card:hover {
+            background: var(--g2);
+        }
+
+        .sale-card-top {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            min-height: 180px;
+        }
+
+        .sale-img {
+            background: var(--g2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sale-body {
+            padding: 28px;
+        }
+
+        .sale-tag {
+            display: inline-block;
+            background: var(--red);
+            color: white;
+            padding: 3px 10px;
+            font-family: var(--font-m);
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            margin-bottom: 12px;
+        }
+
+        .sale-title {
+            font-family: var(--font-d);
+            font-size: 24px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .sale-desc {
+            font-size: 12px;
+            color: var(--g5);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .sale-price {
+            font-family: var(--font-d);
+            font-size: 20px;
+            color: var(--red);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- ══════════════════════════════════════
+     HEADER (always visible)
+══════════════════════════════════════ -->
+    <header>
+        <a class="logo" onclick="goPage('home')">
+            <div class="logo-icon">α</div>
+            <span class="logo-text">SONY<span>ALPHA</span></span>
+        </a>
+        <nav>
+            <a onclick="goPage('cameras')" id="nav-cameras">Fotokameralar</a>
+            <a onclick="goPage('video')" id="nav-video">Videokameralar</a>
+            <a onclick="goPage('lenses')" id="nav-lenses">Ob'ektivlar</a>
+            <a onclick="goPage('sales')" id="nav-sales">Aktsiyalar</a>
+            <a onclick="goPage('news')" id="nav-news">Yangiliklar</a>
+            <a onclick="goPage('faq')" id="nav-faq">FAQ</a>
+            <a onclick="goPage('contact')" id="nav-contact">Kontaktlar</a>
+        </nav>
+        <div class="header-actions">
+            <button class="search-btn">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.35-4.35" />
+                </svg>
+            </button>
+            <button class="cart-btn">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <path d="M16 10a4 4 0 0 1-8 0" />
+                </svg>
+                Savat <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+    <div class="page active" id="page-home">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-left">
+                <div class="hero-eyebrow fi">Rasmiy Sony Do'koni — Toshkent</div>
+                <h1 class="hero-title fi">CAPTURE<br><span class="r">EVERY</span><br><span class="g">MOMENT</span></h1>
+                <p class="hero-desc fi">Sony Alpha bezserkallo kameralari, ob'ektivlar va aksessuarlar — rasmiy kafolat
+                    bilan. Toshkentdagi yagona showroom.</p>
+                <div class="hero-actions fi">
+                    <a class="btn-primary" onclick="goPage('cameras')">Mahsulotlar</a>
+                    <a class="btn-ghost" onclick="goPage('contact')">Showroom</a>
+                </div>
+                <div class="hero-stats fi">
+                    <div>
+                        <div class="stat-num">50<span>+</span></div>
+                        <div class="stat-label">Mahsulot</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">2<span>y</span></div>
+                        <div class="stat-label">Kafolat</div>
+                    </div>
+                    <div>
+                        <div class="stat-num">24<span>h</span></div>
+                        <div class="stat-label">Yetkazish</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-right">
+                <div class="hero-camera-bg"></div>
+                <svg class="hero-svg" width="320" height="260" viewBox="0 0 320 260" fill="none">
+                    <rect x="35" y="70" width="250" height="150" rx="16" fill="#1a1a1a" stroke="#333"
+                        stroke-width="1.5" />
+                    <rect x="35" y="88" width="44" height="132" rx="10" fill="#161616" stroke="#2a2a2a"
+                        stroke-width="1" />
+                    <rect x="52" y="52" width="216" height="26" rx="6" fill="#1f1f1f" stroke="#333" stroke-width="1" />
+                    <rect x="148" y="44" width="56" height="12" rx="2" fill="#141414" stroke="#2a2a2a" />
+                    <circle cx="248" cy="64" r="18" fill="#141414" stroke="#333" stroke-width="1.5" />
+                    <circle cx="248" cy="64" r="6" fill="#cc1e1e" />
+                    <circle cx="178" cy="150" r="68" fill="#111" stroke="#2a2a2a" stroke-width="2" />
+                    <circle cx="178" cy="150" r="56" fill="#0d0d0d" stroke="#222" />
+                    <circle cx="178" cy="150" r="44" fill="#060d1a" stroke="#152030" />
+                    <circle cx="178" cy="150" r="28" fill="#040a12" />
+                    <ellipse cx="166" cy="138" rx="9" ry="5" fill="rgba(100,150,255,.08)"
+                        transform="rotate(-20 166 138)" />
+                    <circle cx="216" cy="126" r="4" fill="#cc1e1e" />
+                    <rect x="140" y="56" width="38" height="18" rx="3" fill="#0a0a0a" stroke="#2a2a2a" />
+                    <rect x="240" y="96" width="22" height="12" rx="3" fill="#cc1e1e" />
+                    <text x="251" y="106" text-anchor="middle" font-family="'DM Mono'" font-size="5"
+                        fill="white">AF</text>
+                    <rect x="90" y="170" width="74" height="44" rx="3" fill="#0d1117" stroke="#1a2030" />
+                    <text x="127" y="197" text-anchor="middle" font-family="'DM Mono'" font-size="7" fill="#4ade80">●
+                        REC</text>
+                    <text x="127" y="208" text-anchor="middle" font-family="'DM Mono'" font-size="6" fill="#888">4K
+                        120fps</text>
+                    <text x="162" y="215" text-anchor="middle" font-family="'DM Sans'" font-size="10" fill="#333"
+                        letter-spacing="3">SONY</text>
+                    <text x="248" y="218" text-anchor="middle" font-family="'DM Sans'" font-size="17"
+                        fill="#cc1e1e">α</text>
+                </svg>
+                <div class="hero-lbl hl1">Full-Frame Sensor</div>
+                <div class="hero-lbl hl2">4K 120fps Video</div>
+                <div class="hero-lbl hl3">Real-Time AF</div>
+            </div>
+        </section>
+
+        <!-- MARQUEE -->
+        <div class="marquee-section">
+            <div class="marquee-track">
+                <div class="marquee-item"><span class="mdot"></span>Sony Alpha Series</div>
+                <div class="marquee-item"><span class="mdot"></span>Rasmiy Kafolat</div>
+                <div class="marquee-item"><span class="mdot"></span>Toshkent Showroom</div>
+                <div class="marquee-item"><span class="mdot"></span>G Master Linzalar</div>
+                <div class="marquee-item"><span class="mdot"></span>4K Video</div>
+                <div class="marquee-item"><span class="mdot"></span>Full Frame</div>
+                <div class="marquee-item"><span class="mdot"></span>Sony Alpha Series</div>
+                <div class="marquee-item"><span class="mdot"></span>Rasmiy Kafolat</div>
+                <div class="marquee-item"><span class="mdot"></span>Toshkent Showroom</div>
+                <div class="marquee-item"><span class="mdot"></span>G Master Linzalar</div>
+                <div class="marquee-item"><span class="mdot"></span>4K Video</div>
+                <div class="marquee-item"><span class="mdot"></span>Full Frame</div>
+            </div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <section class="categories-section">
+            <div class="sec-header fi">
+                <div>
+                    <div class="section-eyebrow">Kategoriyalar</div>
+                    <h2 class="section-title">MAHSULOT<br>TURLARI</h2>
+                </div>
+                <a class="see-all" onclick="goPage('cameras')">Barchasi <svg width="14" height="14" fill="none"
+                        stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg></a>
+            </div>
+            <div class="cat-grid fi">
+                <!-- Big: Alpha -->
+                <div class="cat-card" onclick="goPage('cameras')">
+                    <div class="cat-card-bg" style="background:linear-gradient(135deg,#1a1a1a,#0a0a0a)">
+                        <svg width="260" height="200" viewBox="0 0 260 200" fill="none" opacity=".7">
+                            <rect x="25" y="50" width="210" height="120" rx="14" fill="#222" stroke="#333"
+                                stroke-width="1.5" />
+                            <rect x="25" y="64" width="36" height="106" rx="10" fill="#1a1a1a" />
+                            <circle cx="143" cy="110" r="54" fill="#111" stroke="#2a2a2a" stroke-width="2" />
+                            <circle cx="143" cy="110" r="42" fill="#0d0d0d" />
+                            <circle cx="143" cy="110" r="28" fill="#060d1a" />
+                            <circle cx="200" cy="88" r="3.5" fill="#cc1e1e" />
+                            <text x="137" y="168" font-family="DM Sans" font-size="8" fill="#444"
+                                letter-spacing="2">SONY</text>
+                            <text x="196" y="171" font-family="DM Sans" font-size="14" fill="#cc1e1e">α</text>
+                        </svg>
+                    </div>
+                    <div class="cat-arrow"><svg width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></div>
+                    <div class="cat-card-inner">
+                        <div class="cat-num">01 / 04</div>
+                        <div class="cat-title">Bezserkallo<br>Kameralar</div>
+                        <div class="cat-sub">Alpha series — ILCE-7, ILCE-6000</div>
+                    </div>
+                </div>
+                <!-- Compact -->
+                <div class="cat-card" onclick="goPage('compact')">
+                    <div class="cat-card-bg" style="background:#141414">
+                        <svg width="150" height="110" viewBox="0 0 150 110" fill="none" opacity=".7">
+                            <rect x="22" y="25" width="106" height="70" rx="8" fill="#222" stroke="#333"
+                                stroke-width="1.2" />
+                            <circle cx="74" cy="60" r="24" fill="#111" stroke="#2a2a2a" stroke-width="1.5" />
+                            <circle cx="74" cy="60" r="16" fill="#0d0d0d" />
+                            <rect x="56" y="18" width="38" height="10" rx="3" fill="#1a1a1a" stroke="#2a2a2a" />
+                            <circle cx="108" cy="38" r="3" fill="#cc1e1e" />
+                        </svg>
+                    </div>
+                    <div class="cat-arrow"><svg width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></div>
+                    <div class="cat-card-inner">
+                        <div class="cat-num">02 / 04</div>
+                        <div class="cat-title">Kompakt<br>Kameralar</div>
+                        <div class="cat-sub">Kichik, yengil, professional</div>
+                    </div>
+                </div>
+                <!-- Lenses -->
+                <div class="cat-card" onclick="goPage('lenses')">
+                    <div class="cat-card-bg" style="background:#121212">
+                        <svg width="150" height="110" viewBox="0 0 150 110" fill="none" opacity=".7">
+                            <rect x="54" y="6" width="42" height="98" rx="12" fill="#1a1a1a" stroke="#2a2a2a"
+                                stroke-width="1.5" />
+                            <rect x="48" y="16" width="54" height="13" rx="4" fill="#222" stroke="#333" />
+                            <rect x="48" y="81" width="54" height="13" rx="4" fill="#222" stroke="#333" />
+                            <ellipse cx="75" cy="55" rx="20" ry="20" fill="#0a0d14" stroke="#1a2030"
+                                stroke-width="1.5" />
+                            <ellipse cx="75" cy="55" rx="13" ry="13" fill="#06080f" />
+                            <ellipse cx="69" cy="49" rx="5" ry="3" fill="rgba(100,150,255,.12)"
+                                transform="rotate(-20 69 49)" />
+                        </svg>
+                    </div>
+                    <div class="cat-arrow"><svg width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></div>
+                    <div class="cat-card-inner">
+                        <div class="cat-num">03 / 04</div>
+                        <div class="cat-title">Ob'ektivlar</div>
+                        <div class="cat-sub">G Master, Zeiss linzalar</div>
+                    </div>
+                </div>
+                <!-- Video -->
+                <div class="cat-card" onclick="goPage('video')">
+                    <div class="cat-card-bg" style="background:#111">
+                        <svg width="150" height="110" viewBox="0 0 150 110" fill="none" opacity=".7">
+                            <rect x="18" y="30" width="84" height="54" rx="8" fill="#1a1a1a" stroke="#333"
+                                stroke-width="1.5" />
+                            <circle cx="58" cy="57" r="19" fill="#111" stroke="#222" stroke-width="1.5" />
+                            <circle cx="58" cy="57" r="12" fill="#0a0a0a" />
+                            <polygon points="132,30 102,44 102,70 132,84" fill="#222" stroke="#333"
+                                stroke-width="1.5" />
+                            <circle cx="58" cy="57" r="5" fill="#cc1e1e" />
+                            <rect x="26" y="36" width="11" height="7" rx="2" fill="#cc1e1e" opacity=".8" />
+                        </svg>
+                    </div>
+                    <div class="cat-arrow"><svg width="13" height="13" fill="none" stroke="currentColor"
+                            stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg></div>
+                    <div class="cat-card-inner">
+                        <div class="cat-num">04 / 04</div>
+                        <div class="cat-title">Video<br>Kameralar</div>
+                        <div class="cat-sub">4K, slow-motion, cinema</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TOP PRODUCTS on home -->
+        <section class="products-section">
+            <div class="prod-tabs fi"><button class="tab-btn active">Top Sotuvlar</button><button
+                    class="tab-btn">Yangiliklar</button></div>
+            <div class="prod-grid fi" id="homeProdGrid"></div>
+        </section>
+
+        <!-- PROMO -->
+        <div class="promo fi">
+            <div class="promo-inner">
+                <div class="promo-left">
+                    <span class="promo-tag">Showroom Toshkent</span>
+                    <h2 class="promo-title">NAVOIY<br>KO'CHASI<br><em>14</em></h2>
+                    <p class="promo-desc">Barcha Sony mahsulotlarini jonli ko'ring, sinab ko'ring. Mutaxassislarimiz
+                        sizga yordam beradi.</p>
+                    <a class="btn-primary" href="tel:+99895170-55-22">+998 95 170 55 22</a>
+                </div>
+                <div class="promo-right">
+                    <div class="promo-bg-text">SONY</div>
+                    <svg width="260" height="200" viewBox="0 0 260 200" fill="none" opacity=".5">
+                        <rect x="25" y="44" width="210" height="128" rx="16" fill="#1a1a1a" stroke="#333"
+                            stroke-width="1.5" />
+                        <rect x="25" y="62" width="40" height="110" rx="10" fill="#161616" />
+                        <circle cx="148" cy="108" r="58" fill="#111" stroke="#2a2a2a" stroke-width="2" />
+                        <circle cx="148" cy="108" r="46" fill="#0d0d0d" />
+                        <circle cx="148" cy="108" r="32" fill="#060d1a" />
+                        <circle cx="148" cy="108" r="16" fill="#040810" />
+                        <circle cx="192" cy="80" r="4" fill="#cc1e1e" />
+                        <text x="138" y="170" font-family="DM Sans" font-size="10" fill="#333"
+                            letter-spacing="3">SONY</text>
+                        <text x="198" y="174" font-family="DM Sans" font-size="17" fill="#cc1e1e">α</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- INFO -->
+        <div class="info-grid">
+            <div class="info-card fi">
+                <div class="info-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"
+                        viewBox="0 0 24 24">
+                        <path d="M9 12l2 2 4-4" />
+                        <circle cx="12" cy="12" r="9" />
+                    </svg></div>
+                <h3 class="info-title">Rasmiy Kafolat</h3>
+                <p class="info-desc">Sony kompaniyasidan 2 yil rasmiy kafolat. Har qanday muammo bo'lsa, biz
+                    javobgarmiz.</p>
+            </div>
+            <div class="info-card fi">
+                <div class="info-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"
+                        viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg></div>
+                <h3 class="info-title">Tez Yetkazish</h3>
+                <p class="info-desc">Toshkent bo'ylab 24 soat ichida yetkazib beramiz. Boshqa shaharlar ham — eng tez
+                    yo'l bilan.</p>
+            </div>
+            <div class="info-card fi">
+                <div class="info-icon"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"
+                        viewBox="0 0 24 24">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg></div>
+                <h3 class="info-title">Showroom</h3>
+                <p class="info-desc">Navoiy ko'chasi 14 — barcha mahsulotlarni jonli ko'ring, professional maslahat
+                    oling.</p>
+            </div>
+        </div>
+
+        <!-- NEWS PREVIEW on home -->
+        <section style="padding:0 80px 90px">
+            <div class="sec-header fi">
+                <div>
+                    <div class="section-eyebrow">So'nggi yangiliklar</div>
+                    <h2 class="section-title">YANGILIKLAR</h2>
+                </div>
+                <a class="see-all" onclick="goPage('news')">Barchasi <svg width="14" height="14" fill="none"
+                        stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg></a>
+            </div>
+            <div class="news-items fi" id="homeNewsPreview"></div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <a class="logo" onclick="goPage('home')">
+                        <div class="logo-icon">α</div><span class="logo-text">SONY<span>ALPHA</span></span>
+                    </a>
+                    <p>Toshkentdagi rasmiy Sony Alpha do'koni. Fotokameralar, ob'ektivlar va aksessuarlar — rasmiy
+                        kafolat bilan.</p>
+                    <div class="footer-social">
+                        <a class="social-link" href="https://t.me/SonyAlphaUZ">TG</a>
+                        <a class="social-link" href="https://instagram.com/SonyAlphaUz">IG</a>
+                        <a class="social-link" href="https://facebook.com/SonyAlphaUz">FB</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Mahsulotlar</h4>
+                    <ul>
+                        <li><a onclick="goPage('cameras')">Bezserkallo kameralar</a></li>
+                        <li><a onclick="goPage('compact')">Kompakt kameralar</a></li>
+                        <li><a onclick="goPage('lenses')">Ob'ektivlar</a></li>
+                        <li><a onclick="goPage('video')">Videokameralar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Ma'lumot</h4>
+                    <ul>
+                        <li><a onclick="goPage('faq')">Yetkazib berish</a></li>
+                        <li><a onclick="goPage('faq')">Kafolat</a></li>
+                        <li><a onclick="goPage('faq')">Qaytarish</a></li>
+                        <li><a onclick="goPage('sales')">Aktsiyalar</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Aloqa</h4>
+                    <ul>
+                        <li><a href="tel:+99895170-55-22">+998 95 170 55 22</a></li>
+                        <li><a href="mailto:info@nmp-d.com">info@nmp-d.com</a></li>
+                        <li><a onclick="goPage('contact')">Navoiy ko'chasi, 14</a></li>
+                        <li><a>Du–Ju: 10:00–18:00</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-copy">© 2025 SonyAlpha.uz — Barcha huquqlar himoyalangan</div>
+                <div class="footer-loc"><span class="loc-dot"></span> Toshkent, O'zbekiston</div>
+            </div>
+        </footer>
+    </div><!-- /page-home -->
+
+    <!-- ══════════════════════════════════════
+     CATEGORY PAGES (cameras / compact / lenses / video)
+══════════════════════════════════════ -->
+    <div class="page" id="page-cameras">
+        <div class="cat-page-hero">
+            <button class="back-btn" onclick="goPage('home')">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg>
+                Bosh sahifa
+            </button>
+            <div class="section-eyebrow">Fotokameralar</div>
+            <h1 class="cat-page-title">BEZSERKALLO<br><span style="color:var(--red)">KAMERALAR</span></h1>
+            <p class="cat-page-sub">Sony Alpha seriyasi — professional fotograflar va videograflar uchun mo'ljallangan
+                to'liq kadrli kameralar.</p>
+        </div>
+        <div class="cat-prod-grid" id="grid-cameras"></div>
+    </div>
+
+    <div class="page" id="page-compact">
+        <div class="cat-page-hero">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <div class="section-eyebrow">Fotokameralar</div>
+            <h1 class="cat-page-title">KOMPAKT<br><span style="color:var(--red)">KAMERALAR</span></h1>
+            <p class="cat-page-sub">Kichik va yengil, lekin professional natija. Sayohat va kundalik hayot uchun ideal.
+            </p>
+        </div>
+        <div class="cat-prod-grid" id="grid-compact"></div>
+    </div>
+
+    <div class="page" id="page-lenses">
+        <div class="cat-page-hero">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <div class="section-eyebrow">Optika</div>
+            <h1 class="cat-page-title">OB'EKTIVLAR<br><span style="color:var(--red)">& LINZALAR</span></h1>
+            <p class="cat-page-sub">G Master va Zeiss seriyali ob'ektivlar — har qanday syomka uchun mukammal o'tkir
+                tasvir.</p>
+        </div>
+        <div class="cat-prod-grid" id="grid-lenses"></div>
+    </div>
+
+    <div class="page" id="page-video">
+        <div class="cat-page-hero">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <div class="section-eyebrow">Video</div>
+            <h1 class="cat-page-title">VIDEO<br><span style="color:var(--red)">KAMERALAR</span></h1>
+            <p class="cat-page-sub">4K, slow-motion va cinema sifati — professional video ishlab chiqarish uchun.</p>
+        </div>
+        <div class="cat-prod-grid" id="grid-video"></div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     NEWS LIST PAGE
+══════════════════════════════════════ -->
+    <div class="page" id="page-news">
+        <div class="news-list">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <h1 class="news-list-title">YANGILIKLAR</h1>
+            <div class="news-items" id="newsListContainer"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     NEWS DETAIL PAGE
+══════════════════════════════════════ -->
+    <div class="page" id="page-news-detail">
+        <div class="news-detail">
+            <div class="news-detail-hero" id="newsDetailHeroWrap">
+                <div class="hero-img-placeholder" id="newsDetailHeroImg"
+                    style="background:var(--g1);height:60vh;display:flex;align-items:center;justify-content:center;">
+                </div>
+            </div>
+            <div class="news-detail-content">
+                <button class="news-detail-back" onclick="goPage('news')"><svg width="14" height="14" fill="none"
+                        stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 5l-7 7 7 7" />
+                    </svg> Yangiliklar</button>
+                <div class="news-detail-date" id="newsDetailDate"></div>
+                <h1 class="news-detail-title" id="newsDetailTitle"></h1>
+                <div class="news-detail-body" id="newsDetailBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     SALES PAGE
+══════════════════════════════════════ -->
+    <div class="page" id="page-sales">
+        <div class="sale-page">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <h1 class="sale-page-title">AKTSIYALAR<br><span style="color:var(--red)">& CHEGIRMALAR</span></h1>
+            <div class="sale-grid" id="salesGrid"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     FAQ PAGE
+══════════════════════════════════════ -->
+    <div class="page" id="page-faq">
+        <div class="faq-page">
+            <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
+                    stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M19 12H5M12 5l-7 7 7 7" />
+                </svg> Bosh sahifa</button>
+            <h1 class="faq-page-title">SAVOL &<br><span style="color:var(--red)">JAVOBLAR</span></h1>
+            <div id="faqContainer"></div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     CONTACT PAGE
+══════════════════════════════════════ -->
+    <div class="page" id="page-contact">
+        <div class="about-page">
+            <div class="about-hero">
+                <div>
+                    <div class="section-eyebrow">Showroom & Kontaktlar</div>
+                    <h1 class="about-title">BIZNI<br>TOPING<span style="color:var(--red)">.</span></h1>
+                </div>
+                <div>
+                    <p class="about-desc">Sony Alpha Toshkentdagi yagona rasmiy showroomi. Barcha mahsulotlarni jonli
+                        ko'ring, professional maslahat oling va qulay xarid qiling.</p>
+                    <br>
+                    <button class="back-btn" onclick="goPage('home')" style="margin-top:24px"><svg width="14"
+                            height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path d="M19 12H5M12 5l-7 7 7 7" />
+                        </svg> Bosh sahifaga qaytish</button>
+                </div>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Showroom</h3>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Manzil</strong>Toshkent sh., Navoiy ko'chasi, 14</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Ish vaqti</strong>Dushanba – Juma: 10:00 – 18:00</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17z" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Telefon</strong>+998 95 170 55 22</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Email</strong>info@nmp-d.com</div>
+                    </div>
+                    <div class="map-placeholder">📍 Navoiy ko'chasi, 14 — Xarita yuklanmoqda</div>
+                </div>
+                <div class="contact-card">
+                    <h3>Ijtimoiy Tarmoqlar</h3>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <path
+                                    d="M21.2 8.4c.1.5.1 1 .1 1.6 0 6.5-5 13.9-14 13.9-2.8 0-5.4-.8-7.5-2.2.4 0 .8.1 1.2.1 2.3 0 4.4-.8 6-2.1-2.1 0-3.9-1.4-4.5-3.3.3 0 .6.1.9.1.4 0 .9-.1 1.2-.2C2.2 16.1.5 14 .5 11.5v-.1c.6.4 1.4.6 2.1.6C1.3 11.2.5 9.7.5 8c0-.9.2-1.7.6-2.4 2.3 2.8 5.7 4.7 9.6 4.9-.1-.4-.1-.7-.1-1.1 0-2.7 2.2-4.9 4.9-4.9 1.4 0 2.7.6 3.5 1.6 1.1-.2 2.1-.6 3-.1-.4 1.1-1.1 2.1-2 2.7.9-.1 1.8-.4 2.6-.7-.6.9-1.4 1.8-2.4 2.4z" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Telegram</strong>@SonyAlphaUZ</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <rect x="2" y="2" width="20" height="20" rx="5" />
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Instagram</strong>@SonyAlphaUz</div>
+                    </div>
+                    <div class="contact-row">
+                        <div class="contact-icon"><svg width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                            </svg></div>
+                        <div class="contact-val"><strong>Facebook</strong>SonyAlphaUz</div>
+                    </div>
+                    <div style="margin-top:32px;padding-top:28px;border-top:1px solid var(--g2)">
+                        <h3 style="margin-bottom:16px">Qo'ng'iroq buyurtmasi</h3>
+                        <p style="font-size:13px;color:var(--g5);margin-bottom:20px;line-height:1.8">Telefon
+                            raqamingizni qoldiring — mutaxassisimiz siz bilan bog'lanadi.</p>
+                        <div style="display:flex;gap:8px">
+                            <input type="tel" placeholder="+998 __ ___ __ __"
+                                style="flex:1;padding:10px 14px;background:var(--g2);border:1px solid var(--g3);color:var(--white);font-family:var(--font-m);font-size:12px;outline:none;border-radius:2px">
+                            <button class="btn-primary" style="white-space:nowrap">Yuborish</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     DATA & JAVASCRIPT
+══════════════════════════════════════ -->
+    <script>
+        // ── DATA ──
+        const PRODUCTS = {
+            cameras: [
+                { id: 'ilce7c', name: 'Sony ILCE-7C', sub: 'Full-Frame Bezserkallo Kamera', model: 'ILCE-7C · 24.2MP · 4K', price: '20,608,000', badge: 'top', cat: 'cameras' },
+                { id: 'ilce7sm3', name: 'Sony ILCE-7SM3', sub: 'Video uchun Full-Frame Kamera', model: 'ILCE-7SM3 · 12.1MP · 4K 120fps', price: '34,132,000', badge: 'new', cat: 'cameras' },
+                { id: 'ilce7rm4', name: 'Sony ILCE-7RM4', sub: '61 Megapiksel Full-Frame', model: 'ILCE-7RM4A · 61MP · 4K', price: '41,538,000', badge: 'top', cat: 'cameras' },
+                { id: 'ilce7m4', name: 'Sony ILCE-7M4', sub: 'Yangi avlod Full-Frame', model: 'ILCE-7M4 · 33MP · 4K 60fps', price: '35,420,000', badge: 'new', cat: 'cameras' },
+                { id: 'ilce6600', name: 'Sony ILCE-6600', sub: 'APS-C Bezserkallo Kamera', model: 'ILCE-6600 · 24.2MP · 4K', price: '17,388,000', badge: 'top', cat: 'cameras' },
+                { id: 'ilce7cl', name: 'Sony ILCE-7CL', sub: '28-60mm linza bilan to\'plam', model: 'ILCE-7CL · 24.2MP · Kit', price: '24,472,000', badge: '', cat: 'cameras' },
+            ],
+            compact: [
+                { id: 'rx100vii', name: 'Sony RX100 VII', sub: 'Premium Kompakt Kamera', model: 'DSC-RX100M7 · 20.1MP · 4K', price: '9,800,000', badge: 'top', cat: 'compact' },
+                { id: 'rx10iv', name: 'Sony RX10 IV', sub: 'Uzum masofali kompakt', model: 'DSC-RX10M4 · 20.1MP · 4K', price: '8,400,000', badge: '', cat: 'compact' },
+            ],
+            lenses: [
+                { id: 'sel2470gm', name: 'SEL 24-70mm f/2.8 GM', sub: 'Universal G Master Linza', model: 'SEL2470GM · FE Mount', price: '18,032,000', badge: 'top', cat: 'lenses' },
+                { id: 'sel2470gm2', name: 'SEL 24-70mm f/2.8 GM II', sub: 'Yangi avlod G Master', model: 'SEL2470GM2 · FE Mount', price: '23,828,000', badge: 'new', cat: 'lenses' },
+                { id: 'sel35f14gm', name: '35mm f/1.4 GM', sub: 'Keng burchakli G Master', model: 'SEL35F14GM · FE Mount', price: '16,100,000', badge: '', cat: 'lenses' },
+                { id: 'sel24105g', name: 'SEL 24-105mm F4 G', sub: 'Universal G seriyali linza', model: 'SEL24105G · FE Mount', price: '11,592,000', badge: 'top', cat: 'lenses' },
+                { id: 'sel35f18f', name: 'SEL 35mm f/1.8', sub: 'Ixcham keng burchakli linza', model: 'SEL35F18F · FE Mount', price: '9,016,000', badge: '', cat: 'lenses' },
+                { id: 'sel1224g', name: 'FE 12-24mm f/4 G', sub: 'Ultra keng burchak', model: 'SEL1224G · FE Mount', price: '18,998,000', badge: '', cat: 'lenses' },
+            ],
+            video: [
+                { id: 'fdr-ax700', name: 'Sony FDR-AX700', sub: '4K Pro Videokamera', model: 'FDR-AX700 · 4K HDR · 1"', price: '6,200,000', badge: 'top', cat: 'video' },
+                { id: 'fdr-ax43', name: 'Sony FDR-AX43', sub: 'Kompakt 4K Videokamera', model: 'FDR-AX43 · 4K · BOSS', price: '3,800,000', badge: '', cat: 'video' },
+            ]
+        };
+
+        const NEWS = [
+            {
+                id: 'sony-zv-e10-ii',
+                date: '15 Yanvar 2025',
+                title: 'Sony ZV-E10 II — Bloggerlar uchun yangi kamera',
+                excerpt: 'Sony kompaniyasi ZV-E10 seriyasini yangiladi. Yangi model 4K 60fps, yaxshilangan AF va kattaroq batareya bilan keladi.',
+                imgColor: '#1a2535',
+                imgIcon: '📷',
+                body: `<p>Sony kompaniyasi kontent yaratuvchilar uchun maxsus mo'ljallangan ZV-E10 seriyasining yangi avlodini taqdim etdi. Yangi Sony ZV-E10 II modeli avvalgi versiyasiga nisbatan sezilarli yaxshilanishlarni o'z ichiga oladi.</p>
+<h3>Asosiy xususiyatlar</h3>
+<p>Yangi modelda 26 megapiksellik APS-C CMOS sensor o'rnatilgan bo'lib, u 4K 60fps formatida video yozib olish imkonini beradi. Bu avvalgi modeldagi 4K 30fps cheklovini bartaraf etadi.</p>
+<ul><li>4K 60fps video yozish</li><li>Yaxshilangan avtofokus tizimi (Real-Time Tracking)</li><li>Kattaroq batareya — bir zaryad bilan 570 kadr</li><li>USB-C orqali to'g'ridan-to'g'ri striming</li><li>Yangi mikrofon ulagichi</li></ul>
+<h3>Narx va mavjudlik</h3>
+<p>Sony ZV-E10 II Toshkentdagi SonyAlpha showroomida mavjud. Narxi haqida ma'lumot olish uchun biz bilan bog'laning.</p>`
+            },
+            {
+                id: 'gmaster-lenses-2025',
+                date: '8 Fevral 2025',
+                title: 'G Master linzalar yangi kolleksiyasi — 2025',
+                excerpt: "Sony G Master seriyasiga uchta yangi linza qo'shildi. 50mm f/1.2, 85mm f/1.4 va 135mm f/1.8 — portrait fotograflari uchun ideal tanlov.",
+                imgColor: '#1a1a2a',
+                imgIcon: '🔭',
+                body: `<p>2025 yilda Sony G Master seriyasiga uchta yangi ob'ektiv qo'shildi. Bu linzalar professional fotograflar va videograflar uchun mo'ljallangan bo'lib, eng yuqori sifatdagi tasvirni kafolatlaydi.</p>
+<h3>Yangi G Master linzalar</h3>
+<ul><li><strong>FE 50mm f/1.2 GM</strong> — portrait va street fotografiya uchun</li><li><strong>FE 85mm f/1.4 GM II</strong> — yaxshilangan AF tezligi bilan</li><li><strong>FE 135mm f/1.8 GM</strong> — ultra aniq bokeh effekti</li></ul>
+<p>Barcha uchta linza Sony E-mount tizimi bilan to'liq mos keladi va IBIS bilan birgalikda ishlashga optimallashtirilgan.</p>
+<h3>Qachon mavjud bo'ladi?</h3>
+<p>Linzalar SonyAlpha Toshkent showroomida oldindan buyurtma uchun qabul qilinmoqda. Buyurtma berish uchun bizga qo'ng'iroq qiling.</p>`
+            },
+            {
+                id: 'trade-in-2025',
+                date: '1 Mart 2025',
+                title: "Trade-In aksiyasi — eski kamerangizni yangi Sony'ga almashtiring",
+                excerpt: "Eski Sony kamerangizni olib keling, biz uning qiymatini yangi kamera narxidan ayiramiz. Chegirma miqdori 500,000 UZS dan 3,000,000 UZS gacha.",
+                imgColor: '#1a2a1a',
+                imgIcon: '🔄',
+                body: `<p>SonyAlpha Toshkent 2025 yilning mart oyidan boshlab Trade-In dasturini ishga tushirdi. Bu dastur orqali siz eski Sony kamerangizni yangi modelga almashtira olasiz.</p>
+<h3>Dastur qanday ishlaydi?</h3>
+<ul><li>Eski Sony kamerangizni showroomga olib keling</li><li>Mutaxassislarimiz kamerangiz holatini baholaydi</li><li>Baholash natijasiga ko'ra chegirma taqdim etiladi</li><li>Chegirmani yangi Sony kamera xaridida ishlatib oling</li></ul>
+<h3>Chegirma miqdori</h3>
+<p>Chegirma miqdori kamerangizning holatiga va modeliga qarab 500,000 UZS dan 3,000,000 UZS gacha bo'lishi mumkin. Baholash bepul va hech qanday majburiyatsiz amalga oshiriladi.</p>
+<p>Aksiya 2025 yil 31 martgacha davom etadi. Ulgurashga shoshiling!</p>`
+            }
+        ];
+
+        const FAQS = [
+            { q: "Kafolat muddati qancha?", a: "Sony kompaniyasining rasmiy do'koni sifatida barcha mahsulotlarga 2 yil rasmiy kafolat beramiz. Kafolat muddati davomida barcha nosozliklar bepul tuzatiladi." },
+            { q: "Yetkazib berish xizmati bormi?", a: "Ha, Toshkent bo'ylab 24 soat ichida, boshqa shaharlar uchun 1-3 kun ichida yetkazib beramiz. 5,000,000 UZS dan yuqori xaridlarda yetkazish bepul." },
+            { q: "Naqd pulsiz to'lash imkoni bormi?", a: "Ha, plastik karta (Uzcard, Humo), Click, Payme va bank o'tkazmasi orqali to'lashingiz mumkin. Muddatli to'lov (bo'lib to'lash) ham mavjud." },
+            { q: "Mahsulotni qaytarish mumkinmi?", a: "Mahsulot 14 kun ichida asl holatida (qadoqda, hujjatlari bilan) qaytarilishi mumkin. Texnik nosozlik bo'lsa, kafolat doirasida almashtiriladi." },
+            { q: "Showroom qayerda joylashgan?", a: "Showroomimiz Toshkent sh., Navoiy ko'chasi, 14 manzilida joylashgan. Ish vaqti: Dushanba-Juma, soat 10:00 dan 18:00 gacha." },
+            { q: "Buyurtma berish uchun nima qilish kerak?", a: "Sayt orqali yoki +998 95 170 55 22 raqamiga qo'ng'iroq qilib buyurtma berishingiz mumkin. Telegram: @SonyAlphaUZ orqali ham murojaat qilishingiz mumkin." },
+        ];
+
+        const SALES = [
+            { title: "Sony ILCE-7M3 + 28-70mm Kit", tag: "-15%", desc: "Kamera va linzani birga oling, 15% chegirma bilan. Faqat may oyida!", price: "23,184,000 UZS", svgColor: "#1a1a2a" },
+            { title: "G Master Linzalarga Chegirma", tag: "-10%", desc: "Istalgan G Master linzaga 10% chegirma. Kafolat o'z kuchida qoladi.", price: "18,032,000 UZS", svgColor: "#1a2a1a" },
+            { title: "Aksessuarlar Bundle", tag: "Bepul", desc: "Kamera xaridida — sumka, SD karta va batareya zaryadlovchi bepul!", price: "9,016,000 UZS", svgColor: "#2a1a1a" },
+            { title: "Trade-In Aksiyasi", tag: "-3M UZS", desc: "Eski kamerangizni olib keling — yangi modelga chegirma oling.", price: "20,608,000 UZS", svgColor: "#1a1f2a" },
+        ];
+
+        // ── SVG HELPERS ──
+        function camSVG(w = 140, h = 115) {
+            return `<svg width="${w}" height="${h}" viewBox="0 0 140 115" fill="none">
+    <rect x="15" y="28" width="110" height="68" rx="10" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1.5"/>
+    <rect x="15" y="40" width="20" height="56" rx="8" fill="#161616"/>
+    <circle cx="78" cy="62" r="28" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <circle cx="78" cy="62" r="20" fill="#0d0d0d"/><circle cx="78" cy="62" r="12" fill="#060d1a"/>
+    <circle cx="104" cy="46" r="3" fill="#cc1e1e"/>
+    <rect x="48" y="22" width="50" height="10" rx="3" fill="#1a1a1a" stroke="#2a2a2a"/>
+    <text x="70" y="96" font-family="DM Sans" font-size="6" fill="#333" letter-spacing="2" text-anchor="middle">SONY</text>
+    <text x="104" y="99" font-family="DM Sans" font-size="13" fill="#cc1e1e">α</text>
+  </svg>`;
+        }
+        function lensSVG(w = 90, h = 115) {
+            return `<svg width="${w}" height="${h}" viewBox="0 0 90 115" fill="none">
+    <rect x="24" y="6" width="42" height="103" rx="12" fill="#1a1a1a" stroke="#2a2a2a" stroke-width="1.5"/>
+    <rect x="18" y="16" width="54" height="14" rx="4" fill="#222" stroke="#333"/>
+    <rect x="18" y="85" width="54" height="14" rx="4" fill="#222" stroke="#333"/>
+    <ellipse cx="45" cy="58" rx="22" ry="22" fill="#0a0d14" stroke="#1a2030" stroke-width="1.5"/>
+    <ellipse cx="45" cy="58" rx="14" ry="14" fill="#060810"/>
+    <ellipse cx="39" cy="52" rx="6" ry="3.5" fill="rgba(100,150,255,.12)" transform="rotate(-20 39 52)"/>
+  </svg>`;
+        }
+        function vidSVG(w = 140, h = 100) {
+            return `<svg width="${w}" height="${h}" viewBox="0 0 140 100" fill="none">
+    <rect x="14" y="22" width="80" height="56" rx="8" fill="#1a1a1a" stroke="#333" stroke-width="1.5"/>
+    <circle cx="52" cy="50" r="20" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <circle cx="52" cy="50" r="13" fill="#0a0a0a"/>
+    <polygon points="126,22 94,36 94,64 126,78" fill="#222" stroke="#333" stroke-width="1.5"/>
+    <circle cx="52" cy="50" r="5" fill="#cc1e1e"/>
+    <rect x="22" y="28" width="12" height="8" rx="2" fill="#cc1e1e" opacity=".8"/>
+  </svg>`;
+        }
+
+        // ── RENDER PRODUCT CARD ──
+        function renderProdCard(p, clickable = true) {
+            let svg = p.cat === 'lenses' ? lensSVG() : p.cat === 'video' ? vidSVG() : camSVG();
+            let badgeHtml = p.badge ? `<span class="prod-badge ${p.badge === 'new' ? 'badge-new' : 'badge-top'}">${p.badge === 'new' ? 'Yangi' : 'Top'}</span>` : '';
+            return `<div class="prod-card" ${clickable ? 'onclick="showProdDetail(\'' + p.id + '\')"' : ''}>
+    <div class="prod-img">${badgeHtml}${svg}</div>
+    <div class="prod-info">
+      <div class="prod-name">${p.name}</div>
+      <div class="prod-model">${p.model}</div>
+      <div class="prod-footer">
+        <div><div class="prod-price-lbl">Narx</div><div class="prod-price">${p.price} <small style="font-size:12px;color:var(--g4)">UZS</small></div></div>
+        <button class="prod-add" onclick="event.stopPropagation();addToCart()">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+        }
+
+        // ── RENDER NEWS ITEM ──
+        function renderNewsItem(n, preview = false) {
+            return `<div class="news-item" onclick="openNews('${n.id}')">
+    <div class="news-item-img">
+      <div class="img-placeholder" style="background:${n.imgColor};height:100%;display:flex;align-items:center;justify-content:center;font-size:48px">${n.imgIcon}</div>
+    </div>
+    <div class="news-item-body">
+      <div class="news-date">${n.date}</div>
+      <div class="news-item-title">${n.title}</div>
+      <div class="news-item-excerpt">${n.excerpt}</div>
+      <div class="news-arrow">Batafsil o'qish <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+    </div>
+  </div>`;
+        }
+
+        // ── INIT GRIDS ──
+        function initGrids() {
+            // Category grids
+            document.getElementById('grid-cameras').innerHTML = PRODUCTS.cameras.map(p => renderProdCard(p)).join('');
+            document.getElementById('grid-compact').innerHTML = PRODUCTS.compact.map(p => renderProdCard(p)).join('');
+            document.getElementById('grid-lenses').innerHTML = PRODUCTS.lenses.map(p => renderProdCard(p)).join('');
+            document.getElementById('grid-video').innerHTML = PRODUCTS.video.map(p => renderProdCard(p)).join('');
+
+            // Home: top 4 products
+            const top4 = [...PRODUCTS.cameras.slice(0, 2), PRODUCTS.lenses[0], PRODUCTS.cameras[4]];
+            document.getElementById('homeProdGrid').innerHTML = top4.map(p => renderProdCard(p)).join('');
+
+            // Home news preview (2)
+            document.getElementById('homeNewsPreview').innerHTML = NEWS.slice(0, 2).map(n => renderNewsItem(n, true)).join('');
+
+            // Full news list
+            document.getElementById('newsListContainer').innerHTML = NEWS.map(n => renderNewsItem(n)).join('');
+
+            // FAQ
+            document.getElementById('faqContainer').innerHTML = FAQS.map((f, i) => `
+    <div class="faq-item" id="faq-${i}">
+      <button class="faq-q" onclick="toggleFaq(${i})">
+        <span>${f.q}</span>
+        <svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="faq-a"><p>${f.a}</p></div>
+    </div>`).join('');
+
+            // Sales
+            document.getElementById('salesGrid').innerHTML = SALES.map(s => `
+    <div class="sale-card">
+      <div class="sale-card-top">
+        <div class="sale-img" style="background:${s.svgColor}">${camSVG(120, 100)}</div>
+        <div class="sale-body">
+          <span class="sale-tag">${s.tag}</span>
+          <div class="sale-title">${s.title}</div>
+          <div class="sale-desc">${s.desc}</div>
+          <div class="sale-price">Dan: ${s.price}</div>
+        </div>
+      </div>
+    </div>`).join('');
+        }
+
+        // ── NAVIGATION ──
+        function goPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + id).classList.add('active');
+            window.scrollTo(0, 0);
+            // nav highlight
+            document.querySelectorAll('nav a').forEach(a => a.classList.remove('nav-active'));
+            const navEl = document.getElementById('nav-' + id);
+            if (navEl) navEl.classList.add('nav-active');
+            // trigger fi
+            setTimeout(() => {
+                document.querySelectorAll('#page-' + id + ' .fi').forEach((el, i) => {
+                    setTimeout(() => el.classList.add('v'), i * 80);
+                });
+            }, 50);
+        }
+
+        // ── NEWS DETAIL ──
+        function openNews(id) {
+            const n = NEWS.find(x => x.id === id);
+            if (!n) return;
+            document.getElementById('newsDetailHeroImg').style.background = n.imgColor;
+            document.getElementById('newsDetailHeroImg').style.display = 'flex';
+            document.getElementById('newsDetailHeroImg').innerHTML = `<div style="font-size:120px">${n.imgIcon}</div>`;
+            document.getElementById('newsDetailDate').textContent = n.date;
+            document.getElementById('newsDetailTitle').textContent = n.title;
+            document.getElementById('newsDetailBody').innerHTML = n.body;
+            goPage('news-detail');
+        }
+
+        // ── FAQ TOGGLE ──
+        function toggleFaq(i) {
+            const item = document.getElementById('faq-' + i);
+            item.classList.toggle('open');
+        }
+
+        // ── CART ──
+        let cartCount = 0;
+        function addToCart(btn) {
+            cartCount++;
+            document.getElementById('cartBadge').textContent = cartCount;
+        }
+
+        // ── CURSOR ──
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+        (function anim() {
+            cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+            rx += (mx - rx) * .12; ry += (my - ry) * .12;
+            ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+            requestAnimationFrame(anim);
+        })();
+
+        // ── INTERSECTION OBSERVER ──
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+        }, { threshold: .1, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+        // ── INIT ──
+        initGrids();
+        setTimeout(() => {
+            document.querySelectorAll('#page-home .fi').forEach((el, i) => {
+                setTimeout(() => el.classList.add('v'), i * 100);
+            });
+        }, 100);
+    </script>
+</body>
+
+</html>
