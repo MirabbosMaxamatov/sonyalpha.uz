@@ -1785,3 +1785,21 @@
     .sale-card-top { grid-template-columns: 1fr; }
     .sale-img { height: 120px; }
 }
+/* ──────────────────────────────────────────────────────────────────────────
+   MOBILE-ONLY OVERRIDE  (max-width: 768px)
+   Category cards ("MAHSULOT TURLARI" section): overlay text permanently
+   visible on mobile — no hover/touch needed. Desktop styles above are
+   NOT modified.
+   NOTE: markup class is .cat-card (rendered by renderCategories()).
+   ──────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .cat-card .cat-title,
+    .cat-card .cat-sub,
+    .cat-card .cat-num,
+    .cat-card .cat-arrow,
+    .cat-card .cat-card-inner {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: none !important;
+    }
+}

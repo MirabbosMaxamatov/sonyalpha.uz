@@ -231,7 +231,7 @@ ${bg}
     <div class="prod-model">${product.model}</div>
     <div class="prod-footer">
         <div class="prod-price">${product.price} <small>UZS</small></div>
-        <button class="prod-add" onclick="event.stopPropagation();addToCart()" aria-label="Savatga qo'shish"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></button>
+        <button class="prod-add" onclick="event.stopPropagation();addToCart('${product.id}')" aria-label="Savatga qo'shish"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></button>
     </div>
 </div>
 </article>`;
@@ -291,7 +291,7 @@ function goPage(id) {
     closeProdDrawer();
     document.querySelectorAll('.page').forEach(item => item.classList.remove('active'));
     page.classList.add('active');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.querySelectorAll('nav a').forEach(item => item.classList.remove('nav-active'));
     const navElement = document.getElementById(`nav-${id}`);
     if (navElement) navElement.classList.add('nav-active');
@@ -321,11 +321,159 @@ function toggleFaq(index) {
 }
 
 // ── CART ──
-let cartCount = 0;
-function addToCart() {
-    cartCount += 1;
+let cart = [];
+
+function addToCart(productId) {
+    const allProducts = [...PRODUCTS.cameras, ...PRODUCTS.compact, ...PRODUCTS.lenses, ...PRODUCTS.video];
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+
+    const existingItem = cart.find(item => item.id === productId);
+    if (existingItem) {
+        existingItem.qty += 1;
+    } else {
+        cart.push({ ...product, qty: 1 });
+    }
+    updateCartBadge();
+    renderCart();
+    toggleCart(true);
+}
+
+function updateCartBadge() {
+    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
     const badge = document.getElementById('cartBadge');
-    if (badge) badge.textContent = cartCount;
+    if (badge) badge.textContent = totalItems;
+}
+
+function renderCart() {
+    const content = document.getElementById('cartContent');
+    const footer = document.getElementById('cartFooter');
+    const totalEl = document.getElementById('cartTotal');
+    if (!content) return;
+
+    if (cart.length === 0) {
+        content.innerHTML = `
+            <div class="cart-empty">
+                <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+                <p>Savatingiz bo'sh</p>
+                <button class="btn-primary" onclick="goPage('cameras')">Xaridni boshlash</button>
+            </div>
+        `;
+        if (footer) footer.style.display = 'none';
+        return;
+    }
+
+    const total = cart.reduce((sum, item) => {
+        const price = parseInt(item.price.replace(/,/g, ''), 10);
+        return sum + price * item.qty;
+    }, 0);
+
+    content.innerHTML = cart.map(item => {
+        const price = parseInt(item.price.replace(/,/g, ''), 10);
+        return `
+            <div class="cart-item">
+                <div class="cart-item-img" style="background-image:url('${item.img}')"></div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-model">${item.model}</div>
+                    <div class="cart-item-price">${item.price.toLocaleString()} UZS</div>
+                    <div class="cart-item-qty">
+                        <button onclick="updateCartQty('${item.id}', -1)">−</button>
+                        <span>${item.qty}</span>
+                        <button onclick="updateCartQty('${item.id}', 1)">+</button>
+                    </div>
+                </div>
+                <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+        `;
+    }).join('');
+
+    if (footer) footer.style.display = 'block';
+    if (totalEl) totalEl.textContent = total.toLocaleString() + ' UZS';
+}
+
+function updateCartQty(productId, delta) {
+    const item = cart.find(i => i.id === productId);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== productId);
+    }
+    updateCartBadge();
+    renderCart();
+}
+
+function removeFromCart(productId) {
+    cart = cart.filter(i => i.id !== productId);
+    updateCartBadge();
+    renderCart();
+}
+
+function toggleCart(forceOpen) {
+    const drawer = document.getElementById('cartDrawer');
+    if (!drawer) return;
+    const isOpen = drawer.classList.contains('open');
+    if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+        drawer.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        renderCart();
+    } else {
+        drawer.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
+// ── SEARCH ──
+function toggleSearch(forceOpen) {
+    const modal = document.getElementById('searchModal');
+    const input = document.getElementById('searchInput');
+    if (!modal) return;
+    const isOpen = modal.classList.contains('open');
+    if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        if (input) {
+            input.value = '';
+            input.focus();
+            renderSearchResults('');
+        }
+    } else {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+}
+
+function renderSearchResults(query) {
+    const container = document.getElementById('searchResults');
+    if (!container) return;
+
+    const allProducts = [...PRODUCTS.cameras, ...PRODUCTS.compact, ...PRODUCTS.lenses, ...PRODUCTS.video];
+    const filtered = query
+        ? allProducts.filter(p =>
+            p.name.toLowerCase().includes(query.toLowerCase()) ||
+            p.model.toLowerCase().includes(query.toLowerCase()) ||
+            p.sub.toLowerCase().includes(query.toLowerCase()) ||
+            (CATEGORY_LABELS[p.cat] || '').toLowerCase().includes(query.toLowerCase())
+        )
+        : allProducts;
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="search-empty">Mahsulot topilmadi</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map(product => `
+        <div class="search-result-item" onclick="showProdDetail('${product.id}'); toggleSearch(false)">
+            <div class="search-result-img" style="background-image:url('${product.img}')"></div>
+            <div class="search-result-info">
+                <div class="search-result-name">${product.name}</div>
+                <div class="search-result-model">${product.model}</div>
+                <div class="search-result-price">${product.price} UZS</div>
+            </div>
+        </div>
+    `).join('');
 }
 
 // ── PRODUCT DRAWER ──
@@ -344,6 +492,8 @@ function showProdDetail(id) {
         if (!mediaPreview.dataset.svg) mediaPreview.dataset.svg = mediaPreview.innerHTML;
         mediaPreview.innerHTML = mediaPreview.dataset.svg;
     }
+    // Store current product ID for addToCart button
+    window.currentProductId = product.id;
     document.getElementById('prodDrawer').classList.add('open');
     document.body.style.overflow = 'hidden';
 }
@@ -356,7 +506,23 @@ function closeProdDrawer() {
 }
 
 document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') closeProdDrawer();
+    if (event.key === 'Escape') {
+        closeProdDrawer();
+        const cartDrawer = document.getElementById('cartDrawer');
+        const searchModal = document.getElementById('searchModal');
+        if (cartDrawer?.classList.contains('open')) toggleCart(false);
+        if (searchModal?.classList.contains('open')) toggleSearch(false);
+    }
+});
+
+// Search input listener
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            renderSearchResults(e.target.value);
+        });
+    }
 });
 
 // ── CURSOR ──

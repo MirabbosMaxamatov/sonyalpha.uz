@@ -34,13 +34,13 @@
             <a onclick="goPage('contact')" id="nav-contact">Kontaktlar</a>
         </nav>
         <div class="header-actions">
-            <button class="search-btn">
+            <button class="search-btn" onclick="toggleSearch()">
                 <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.35-4.35" />
                 </svg>
             </button>
-            <button class="cart-btn">
+            <button class="cart-btn" onclick="toggleCart()">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                     <line x1="3" y1="6" x2="21" y2="6" />
@@ -364,11 +364,52 @@
                     <div class="prod-drawer-price" id="drawerPrice">—</div>
                     <div class="prod-drawer-desc" id="drawerDesc"></div>
                     <div class="prod-drawer-actions">
-                        <button class="btn-primary" onclick="addToCart()">SAVATGA QO'SHISH</button>
+                        <button class="btn-primary" onclick="addToCart(window.currentProductId)">SAVATGA QO'SHISH</button>
                         <a class="btn-ghost" href="tel:+99895170-55-22">BUYURTMA BERISH</a>
                     </div>
                 </div>
             </div>
+        </div>
+</div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-drawer-overlay" onclick="toggleCart()"></div>
+        <div class="cart-drawer-panel">
+            <div class="cart-drawer-header">
+                <h2>SAVAT</h2>
+                <button class="cart-drawer-close" onclick="toggleCart()">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="cart-drawer-content" id="cartContent">
+                <div class="cart-empty">
+                    <svg width="64" height="64" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+                    <p>Savatingiz bo'sh</p>
+                    <button class="btn-primary" onclick="goPage('cameras')">Xaridni boshlash</button>
+                </div>
+            </div>
+            <div class="cart-drawer-footer" id="cartFooter" style="display:none">
+                <div class="cart-total">
+                    <span>Jami</span>
+                    <strong id="cartTotal">0 UZS</strong>
+                </div>
+                <button class="btn-primary" style="width:100%" onclick="goPage('contact')">BUYURTMA BERISH</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SEARCH MODAL -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-overlay" onclick="toggleSearch()"></div>
+        <div class="search-modal-panel">
+            <div class="search-modal-header">
+                <input type="text" class="search-input" id="searchInput" placeholder="Mahsulot qidirish..." autocomplete="off" spellcheck="false">
+                <button class="search-close" onclick="toggleSearch()">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
         </div>
     </div>
 
@@ -381,5 +422,3 @@
     <script src="site-data.js"></script>
     <script src="script.js"></script>
 </body>
-
-</html>
