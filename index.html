@@ -3,12 +3,30 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Sony Alpha — Toshkentdagi rasmiy do'kon. Fotokameralar, ob'ektivlar, videokameralar va aksessuarlar. Rasmiy kafolat, tez yetkazish, showroom.">
+    <meta name="theme-color" content="#0a0a0a">
     <title>Sony Alpha — Rasmiy Do'kon | Toshkent</title>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sonyalpha.uz/">
+    <meta property="og:title" content="Sony Alpha — Rasmiy Do'kon | Toshkent">
+    <meta property="og:description" content="Sony Alpha bezserkallo kameralar, ob'ektivlar va aksessuarlar — rasmiy kafolat bilan. Toshkentdagi yagona showroom.">
+    <meta property="og:image" content="https://sonyalpha.uz/images/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sonyalpha.uz/">
+    <meta property="twitter:title" content="Sony Alpha — Rasmiy Do'kon | Toshkent">
+    <meta property="twitter:description" content="Sony Alpha bezserkallo kameralar, ob'ektivlar va aksessuarlar — rasmiy kafolat bilan.">
+    <meta property="twitter:image" content="https://sonyalpha.uz/images/og-image.jpg">
+
     <link
         href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect fill='%23cc1e1e' width='32' height='32' rx='4'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' font-weight='bold' fill='white'>α</text></svg>">
 </head>
 
 <body>
@@ -19,12 +37,12 @@
     <!-- ══════════════════════════════════════
      HEADER (always visible)
      ══════════════════════════════════════ -->
-    <header>
-        <a class="logo" onclick="goPage('home')">
-            <div class="logo-icon">α</div>
+    <header role="banner">
+        <a class="logo" onclick="goPage('home')" aria-label="Bosh sahifa">
+            <div class="logo-icon" aria-hidden="true">α</div>
             <span class="logo-text">SONY<span>ALPHA</span></span>
         </a>
-        <nav>
+        <nav aria-label="Asosiy navigatsiya">
             <a onclick="goPage('cameras')" id="nav-cameras">Fotokameralar</a>
             <a onclick="goPage('video')" id="nav-video">Videokameralar</a>
             <a onclick="goPage('lenses')" id="nav-lenses">Ob'ektivlar</a>
@@ -34,27 +52,29 @@
             <a onclick="goPage('contact')" id="nav-contact">Kontaktlar</a>
         </nav>
         <div class="header-actions">
-            <button class="search-btn" onclick="toggleSearch()">
-                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <button class="search-btn" onclick="toggleSearch()" aria-label="Qidirish" aria-expanded="false" aria-controls="searchModal">
+                <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                     <circle cx="11" cy="11" r="8" />
                     <path d="m21 21-4.35-4.35" />
                 </svg>
             </button>
-            <button class="cart-btn" onclick="toggleCart()">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <button class="cart-btn" onclick="toggleCart()" aria-label="Savat" aria-expanded="false" aria-controls="cartDrawer">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                     <line x1="3" y1="6" x2="21" y2="6" />
                     <path d="M16 10a4 4 0 0 1-8 0" />
                 </svg>
-                Savat <span class="cart-badge" id="cartBadge">0</span>
+                Savat <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
             </button>
         </div>
     </header>
 
-    <!-- ══════════════════════════════════════
+    <main id="app" role="main">
+
+        <!-- ══════════════════════════════════════
      HOME PAGE
      ══════════════════════════════════════ -->
-    <div class="page active" id="page-home">
+    <section id="page-home" class="page-section active">
 
         <!-- HERO (rendered from SITE_DATA.hero by script.js) -->
         <section class="hero fi" id="heroSection"></section>
@@ -107,7 +127,7 @@
 
         <!-- FOOTER (rendered from SITE_DATA.footer by script.js) -->
         <footer id="footer"></footer>
-    </div><!-- /page-home -->
+    </section><!-- /page-home -->
 
     <!-- ══════════════════════════════════════
      CATEGORY PAGES (cameras / compact / lenses / video)
