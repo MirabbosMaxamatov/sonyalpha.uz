@@ -75,12 +75,25 @@
         }
 
         /* ── PAGE SYSTEM ── */
+        /* Har bir sahifa konteyneri (.page yoki .page-section) faqat
+           .active klassiga ega bo'lganda ko'rinadi. */
         .page {
             display: none;
             min-height: 100vh;
         }
 
         .page.active {
+            display: block;
+        }
+
+        /* .page-section — #page-home va boshqa sahifa konteynerlari uchun
+           bir xil qoida (goPage() ikkala klassni ham boshqaradi). */
+        .page-section {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .page-section.active {
             display: block;
         }
 
@@ -613,6 +626,9 @@
         .cat-card-inner {
             position: absolute;
             inset: 0;
+            /* Rasm (.cat-card-bg img, z-index: 2) ustida turishi shart —
+               aks holda sarlavha va tavsif rasm ostida qolib ko'rinmaydi. */
+            z-index: 3;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -654,6 +670,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            z-index: 4;
             width: 34px;
             height: 34px;
             border: 1px solid rgba(255, 255, 255, .15);
@@ -1714,6 +1731,161 @@
 .prod-drawer-desc { font-size: 13px; color: var(--g5); line-height: 1.8; margin-bottom: 28px; }
 .prod-drawer-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 
+/* ── CART DRAWER ──────────────────────────────────────────────────────────
+   Savat drawer'i (index.html #cartDrawer) — .prod-drawer bilan bir xil
+   mantiq: .open klassi panelni o'ngdan chiqaradi.
+   ──────────────────────────────────────────────────────────────────────── */
+.cart-drawer {
+    position: fixed; inset: 0; z-index: 600;
+    visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s;
+}
+.cart-drawer.open { visibility: visible; opacity: 1; }
+.cart-drawer-overlay {
+    position: absolute; inset: 0; background: rgba(0, 0, 0, .7);
+    backdrop-filter: blur(4px);
+}
+.cart-drawer-panel {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 460px; max-width: 100vw;
+    background: var(--black); border-left: 1px solid var(--g1);
+    transform: translateX(100%); transition: transform .4s ease;
+    display: flex; flex-direction: column; z-index: 2;
+}
+.cart-drawer.open .cart-drawer-panel { transform: none; }
+.cart-drawer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid var(--g1); flex: 0 0 auto;
+}
+.cart-drawer-header h2 {
+    font-family: var(--font-d); font-size: 26px; letter-spacing: 3px; line-height: 1;
+}
+.cart-drawer-close {
+    width: 38px; height: 38px; background: var(--g1); border: 1px solid var(--g2);
+    border-radius: 4px; color: var(--g5); cursor: none;
+    display: flex; align-items: center; justify-content: center; transition: all .2s;
+}
+.cart-drawer-close:hover { border-color: var(--red); color: var(--red); }
+.cart-drawer-content { flex: 1 1 auto; overflow-y: auto; padding: 8px 24px; }
+.cart-empty {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 16px; padding: 60px 0; text-align: center;
+    color: var(--g4); font-size: 13px; letter-spacing: 1px;
+}
+.cart-empty svg { color: var(--g2); }
+.cart-empty .btn-primary { margin-top: 6px; }
+.cart-item {
+    position: relative; display: flex; gap: 14px;
+    padding: 16px 0; border-bottom: 1px solid var(--g1);
+}
+.cart-item-img {
+    flex: 0 0 72px; width: 72px; height: 72px; border-radius: 4px;
+    border: 1px solid var(--g2); background: var(--g1) center/cover no-repeat;
+}
+.cart-item-info { flex: 1 1 auto; min-width: 0; }
+.cart-item-name { font-size: 13px; font-weight: 400; margin-bottom: 2px; }
+.cart-item-model {
+    font-family: var(--font-m); font-size: 9px; color: var(--g4);
+    letter-spacing: 1px; margin-bottom: 8px;
+}
+.cart-item-price { font-family: var(--font-d); font-size: 18px; color: var(--red); letter-spacing: 1px; }
+.cart-item-qty { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.cart-item-qty button {
+    width: 26px; height: 26px; background: var(--g1); border: 1px solid var(--g2);
+    border-radius: 3px; color: var(--white); font-size: 14px; line-height: 1;
+    cursor: none; transition: all .2s;
+}
+.cart-item-qty button:hover { border-color: var(--red); color: var(--red); }
+.cart-item-qty span {
+    font-family: var(--font-m); font-size: 12px; min-width: 18px; text-align: center;
+}
+.cart-item-remove {
+    position: absolute; top: 16px; right: 0; padding: 4px;
+    background: transparent; border: none; color: var(--g4);
+    cursor: none; transition: color .2s;
+}
+.cart-item-remove:hover { color: var(--red); }
+.cart-drawer-footer {
+    flex: 0 0 auto; border-top: 1px solid var(--g1); padding: 18px 24px 22px;
+}
+.cart-total {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px; color: var(--g4); font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+}
+.cart-total strong {
+    font-family: var(--font-d); font-size: 24px; letter-spacing: 1px;
+    color: var(--white); font-weight: 400;
+}
+
+/* ── SEARCH MODAL ─────────────────────────────────────────────────────────
+   Header'dagi qidiruv tugmasi (#searchModal) — real vaqtda filtrlash.
+   ──────────────────────────────────────────────────────────────────────── */
+.search-modal {
+    position: fixed; inset: 0; z-index: 700;
+    visibility: hidden; opacity: 0; transition: opacity .3s, visibility .3s;
+    overflow-y: auto; padding: 96px 20px 48px;
+}
+.search-modal.open { visibility: visible; opacity: 1; }
+.search-modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, .78);
+    backdrop-filter: blur(6px);
+}
+.search-modal-panel {
+    position: relative; z-index: 2; max-width: 720px; margin: 0 auto;
+    background: var(--black); border: 1px solid var(--g2); border-radius: 6px;
+    overflow: hidden; transform: translateY(-16px); transition: transform .35s ease;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .6);
+}
+.search-modal.open .search-modal-panel { transform: none; }
+.search-modal-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 20px; border-bottom: 1px solid var(--g1);
+}
+.search-input {
+    flex: 1 1 auto; min-width: 0; background: transparent; border: none; outline: none;
+    color: var(--white); font-family: var(--font-b); font-size: 15px; letter-spacing: .5px;
+}
+.search-input::placeholder { color: var(--g4); }
+.search-close {
+    flex: 0 0 auto; width: 34px; height: 34px; background: var(--g1);
+    border: 1px solid var(--g2); border-radius: 4px; color: var(--g5); cursor: none;
+    display: flex; align-items: center; justify-content: center; transition: all .2s;
+}
+.search-close:hover { border-color: var(--red); color: var(--red); }
+.search-results { max-height: 62vh; overflow-y: auto; padding: 8px; }
+.search-result-item {
+    display: flex; align-items: center; gap: 14px; padding: 12px;
+    border-radius: 4px; cursor: none; transition: background .2s;
+}
+.search-result-item:hover,
+.search-result-item:focus-within { background: var(--g1); }
+.search-result-img {
+    flex: 0 0 56px; width: 56px; height: 56px; border-radius: 4px;
+    border: 1px solid var(--g2); background: var(--g1) center/cover no-repeat;
+}
+.search-result-info { flex: 1 1 auto; min-width: 0; }
+.search-result-name { font-size: 13px; margin-bottom: 2px; }
+.search-result-model {
+    font-family: var(--font-m); font-size: 9px; color: var(--g4);
+    letter-spacing: 1px; margin-bottom: 4px;
+}
+.search-result-price { font-family: var(--font-d); font-size: 16px; color: var(--red); letter-spacing: 1px; }
+.search-result-add {
+    flex: 0 0 auto; width: 32px; height: 32px; background: transparent;
+    border: 1px solid var(--g2); border-radius: 4px; color: var(--g5);
+    cursor: none; display: flex; align-items: center; justify-content: center;
+    transition: all .2s;
+}
+.search-result-add:hover { border-color: var(--red); color: var(--red); background: rgba(204, 30, 30, .08); }
+.search-empty {
+    padding: 44px 16px; text-align: center;
+    color: var(--g4); font-size: 13px; letter-spacing: 1px;
+}
+.search-meta {
+    padding: 10px 20px 14px; border-top: 1px solid var(--g1);
+    font-family: var(--font-m); font-size: 9px; color: var(--g4); letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 1024px) {
     header { padding: 0 20px; }
@@ -1769,6 +1941,13 @@
     .sale-grid { grid-template-columns: 1fr; }
     .sale-card-top { grid-template-columns: 120px 1fr; }
     .prod-drawer-panel { width: 100vw; }
+    .cart-drawer-panel { width: 100vw; }
+    .cart-drawer-content { padding: 4px 18px; }
+    .cart-drawer-header { padding: 16px 18px; }
+    .cart-drawer-footer { padding: 16px 18px 20px; }
+    .search-modal { padding: 72px 16px 32px; }
+    .search-modal-panel { border-radius: 4px; }
+    .search-results { max-height: 58vh; }
     .prod-drawer-inner { padding: 72px 20px 32px; }
     .prod-drawer-title { font-size: 32px; }
     .prod-drawer-actions { flex-direction: column; }
@@ -1788,8 +1967,9 @@
 /* ──────────────────────────────────────────────────────────────────────────
    MOBILE-ONLY OVERRIDE  (max-width: 768px)
    Category cards ("MAHSULOT TURLARI" section): overlay text permanently
-   visible on mobile — no hover/touch needed. Desktop styles above are
-   NOT modified.
+   visible on mobile — no hover/touch needed. Desktop styles AND desktop
+   hover effects (.cat-card:hover .cat-card-bg / .cat-card-inner /
+   .cat-arrow) above are NOT modified — they stay exactly as they were.
    NOTE: markup class is .cat-card (rendered by renderCategories()).
    ──────────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
@@ -1797,9 +1977,26 @@
     .cat-card .cat-sub,
     .cat-card .cat-num,
     .cat-card .cat-arrow,
+    .cat-card .cat-overlay,
     .cat-card .cat-card-inner {
         opacity: 1 !important;
         visibility: visible !important;
         transform: none !important;
     }
+
+    /* Matn doim rasm (.cat-card-bg img) ustida turishi uchun qatlamlar */
+    .cat-card .cat-card-inner { z-index: 3 !important; }
+    .cat-card .cat-arrow { z-index: 4 !important; }
+
+    /* Telefonda kontrastni oshirish — matn o'qilishi oson bo'ladi */
+    .cat-card .cat-card-inner {
+        background: linear-gradient(to top,
+                rgba(0, 0, 0, .88) 0%,
+                rgba(0, 0, 0, .45) 55%,
+                rgba(0, 0, 0, .1) 100%);
+    }
+
+    .cat-card .cat-title { font-size: 24px; }
+    .cat-card:first-child .cat-title { font-size: 30px; }
+    .cat-card .cat-sub { color: var(--g6); }
 }

@@ -74,7 +74,7 @@
         <!-- ══════════════════════════════════════
      HOME PAGE
      ══════════════════════════════════════ -->
-    <section id="page-home" class="page-section active">
+    <section id="page-home" class="page page-section active">
 
         <!-- HERO (rendered from SITE_DATA.hero by script.js) -->
         <section class="hero fi" id="heroSection"></section>
@@ -125,14 +125,14 @@
             <div class="news-items fi" id="homeNewsPreview"></div>
         </section>
 
-        <!-- FOOTER (rendered from SITE_DATA.footer by script.js) -->
-        <footer id="footer"></footer>
+        <!-- FOOTER moved outside the page sections (see below) so it is
+             visible on every page — it is rendered by script.js renderFooter() -->
     </section><!-- /page-home -->
 
     <!-- ══════════════════════════════════════
      CATEGORY PAGES (cameras / compact / lenses / video)
      ══════════════════════════════════════ -->
-    <div class="page" id="page-cameras">
+    <div class="page page-section" id="page-cameras">
         <div class="cat-page-hero">
             <button class="back-btn" onclick="goPage('home')">
                 <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@
         <div class="cat-prod-grid" id="grid-cameras"></div>
     </div>
 
-    <div class="page" id="page-compact">
+    <div class="page page-section" id="page-compact">
         <div class="cat-page-hero">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -162,7 +162,7 @@
         <div class="cat-prod-grid" id="grid-compact"></div>
     </div>
 
-    <div class="page" id="page-lenses">
+    <div class="page page-section" id="page-lenses">
         <div class="cat-page-hero">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -176,7 +176,7 @@
         <div class="cat-prod-grid" id="grid-lenses"></div>
     </div>
 
-    <div class="page" id="page-video">
+    <div class="page page-section" id="page-video">
         <div class="cat-page-hero">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -192,7 +192,7 @@
     <!-- ══════════════════════════════════════
      NEWS LIST PAGE
      ══════════════════════════════════════ -->
-    <div class="page" id="page-news">
+    <div class="page page-section" id="page-news">
         <div class="news-list">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -206,7 +206,7 @@
     <!-- ══════════════════════════════════════
      NEWS DETAIL PAGE
      ══════════════════════════════════════ -->
-    <div class="page" id="page-news-detail">
+    <div class="page page-section" id="page-news-detail">
         <div class="news-detail">
             <div class="news-detail-hero" id="newsDetailHeroWrap">
                 <div class="hero-img-placeholder" id="newsDetailHeroImg"
@@ -228,7 +228,7 @@
     <!-- ══════════════════════════════════════
      SALES PAGE
      ══════════════════════════════════════ -->
-    <div class="page" id="page-sales">
+    <div class="page page-section" id="page-sales">
         <div class="sale-page">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -242,7 +242,7 @@
     <!-- ══════════════════════════════════════
      FAQ PAGE
      ══════════════════════════════════════ -->
-    <div class="page" id="page-faq">
+    <div class="page page-section" id="page-faq">
         <div class="faq-page">
             <button class="back-btn" onclick="goPage('home')"><svg width="14" height="14" fill="none"
                     stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -256,7 +256,7 @@
     <!-- ══════════════════════════════════════
      CONTACT PAGE
      ══════════════════════════════════════ -->
-    <div class="page" id="page-contact">
+    <div class="page page-section" id="page-contact">
         <div class="about-page">
             <div class="about-hero">
                 <div>
@@ -350,6 +350,13 @@
             </div>
         </div>
     </div>
+
+    <!-- ══════════════════════════════════════
+     FOOTER (shared by every page — rendered from SITE_DATA.footer)
+     ══════════════════════════════════════ -->
+    <footer id="footer"></footer>
+
+    </main><!-- /#app -->
 
     <!-- ══════════════════════════════════════
      DATA & JAVASCRIPT

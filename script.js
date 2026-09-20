@@ -270,31 +270,66 @@ function initProductTabs() {
 }
 
 // ── INIT GRIDS ──
+// Xavfsiz yozuvchi: bitta element topilmasa ham qolgan bo'limlar render bo'lib qoladi
+function setHTML(elementId, html) {
+    const element = document.getElementById(elementId);
+    if (element) element.innerHTML = html;
+    return element;
+}
+
 function initGrids() {
     renderStaticSections();
-    document.getElementById('grid-cameras').innerHTML = PRODUCTS.cameras.map(product => renderProdCard(product)).join('');
-    document.getElementById('grid-compact').innerHTML = PRODUCTS.compact.map(product => renderProdCard(product)).join('');
-    document.getElementById('grid-lenses').innerHTML = PRODUCTS.lenses.map(product => renderProdCard(product)).join('');
-    document.getElementById('grid-video').innerHTML = PRODUCTS.video.map(product => renderProdCard(product)).join('');
+    // Kategoriya sahifalari — PRODUCTS massivlaridan dinamik to'ldiriladi
+    setHTML('grid-cameras', PRODUCTS.cameras.map(product => renderProdCard(product)).join(''));
+    setHTML('grid-compact', PRODUCTS.compact.map(product => renderProdCard(product)).join(''));
+    setHTML('grid-lenses', PRODUCTS.lenses.map(product => renderProdCard(product)).join(''));
+    setHTML('grid-video', PRODUCTS.video.map(product => renderProdCard(product)).join(''));
+    // Bosh sahifadagi "Top sotuvlar / Yangiliklar" grid'i
     renderHomeProducts();
     initProductTabs();
-    document.getElementById('homeNewsPreview').innerHTML = NEWS.slice(0, 2).map(news => renderNewsItem(news, true)).join('');
-    document.getElementById('newsListContainer').innerHTML = NEWS.map(news => renderNewsItem(news)).join('');
-    document.getElementById('faqContainer').innerHTML = SITE_DATA.faqs.map((faq, index) => `<div class="faq-item" id="faq-${index}"><button class="faq-q" onclick="toggleFaq(${index})"><span>${faq.q}</span><svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="faq-a"><p>${faq.a}</p></div></div>`).join('');
-    document.getElementById('salesGrid').innerHTML = SITE_DATA.sales.map(sale => `<div class="sale-card"><div class="sale-card-top"><div class="sale-img">${sale.img ? `<img src="${sale.img}" alt="${sale.title}">` : camSVG(120, 100)}</div><div class="sale-body"><span class="sale-tag">${sale.tag}</span><div class="sale-title">${sale.title}</div><div class="sale-desc">${sale.desc}</div><div class="sale-price">Dan: ${sale.price}</div></div></div></div>`).join('');
+    // Yangiliklar (bosh sahifa preview + to'liq ro'yxat sahifasi)
+    setHTML('homeNewsPreview', NEWS.slice(0, 2).map(news => renderNewsItem(news, true)).join(''));
+    setHTML('newsListContainer', NEWS.map(news => renderNewsItem(news)).join(''));
+    // FAQ (savol-javoblar sahifasi)
+    setHTML('faqContainer', (SITE_DATA.faqs || []).map((faq, index) => `<div class="faq-item" id="faq-${index}"><button class="faq-q" onclick="toggleFaq(${index})"><span>${faq.q}</span><svg class="faq-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button><div class="faq-a"><p>${faq.a}</p></div></div>`).join(''));
+    // Aksiyalar sahifasi
+    setHTML('salesGrid', (SITE_DATA.sales || []).map(sale => `<div class="sale-card"><div class="sale-card-top"><div class="sale-img">${sale.img ? `<img src="${sale.img}" alt="${sale.title}">` : camSVG(120, 100)}</div><div class="sale-body"><span class="sale-tag">${sale.tag}</span><div class="sale-title">${sale.title}</div><div class="sale-desc">${sale.desc}</div><div class="sale-price">Dan: ${sale.price}</div></div></div></div>`).join(''));
 }
 
 // ── NAVIGATION ──
 function goPage(id) {
     const page = document.getElementById(`page-${id}`);
-    if (!page) return;
+    if (!page) {
+        console.warn(`[goPage] Sahifa topilmadi: #page-${id}`);
+        return;
+    }
+
+    // Ochiq drawer/modal bo'lsa yopiladi (aks holda body overflow qulflanadi)
     closeProdDrawer();
-    document.querySelectorAll('.page').forEach(item => item.classList.remove('active'));
+    toggleCart(false);
+    toggleSearch(false);
+
+    // 1) Barcha sahifa bo'limlarini yashiramiz (.page va .page-section)
+    document.querySelectorAll('.page, .page-section').forEach(section => section.classList.remove('active'));
+
+    // 2) Faqat tanlangan sahifani ko'rsatamiz
     page.classList.add('active');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 3) Navigatsiya holatini yangilaymiz
     document.querySelectorAll('nav a').forEach(item => item.classList.remove('nav-active'));
     const navElement = document.getElementById(`nav-${id}`);
     if (navElement) navElement.classList.add('nav-active');
+
+    // 4) Deep-link: URL hash sahifani eslab qoladi (#cameras, #faq, ...)
+    if (window.location.hash.slice(1) !== id) {
+        history.replaceState(null, '', `#${id}`);
+    }
+
+    // 5) Sahifa boshiga silliq o'tamiz
+    document.body.style.overflow = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 6) Yangi sahifadagi fade-in elementlarni qayta ishga tushuramiz
     setTimeout(() => {
         document.querySelectorAll(`#page-${id} .fi`).forEach((element, index) => setTimeout(() => element.classList.add('v'), index * 80));
     }, 50);
@@ -415,7 +450,8 @@ function toggleCart(forceOpen) {
     const drawer = document.getElementById('cartDrawer');
     if (!drawer) return;
     const isOpen = drawer.classList.contains('open');
-    if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+    const shouldOpen = forceOpen === true || (!isOpen && forceOpen !== false);
+    if (shouldOpen) {
         drawer.classList.add('open');
         document.body.style.overflow = 'hidden';
         renderCart();
@@ -423,57 +459,93 @@ function toggleCart(forceOpen) {
         drawer.classList.remove('open');
         document.body.style.overflow = '';
     }
+    const trigger = document.querySelector('.cart-btn');
+    if (trigger) trigger.setAttribute('aria-expanded', String(shouldOpen));
 }
 
 // ── SEARCH ──
+function getSearchableProducts() {
+    return [...PRODUCTS.cameras, ...PRODUCTS.compact, ...PRODUCTS.lenses, ...PRODUCTS.video];
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    }[char]));
+}
+
 function toggleSearch(forceOpen) {
     const modal = document.getElementById('searchModal');
     const input = document.getElementById('searchInput');
     if (!modal) return;
     const isOpen = modal.classList.contains('open');
-    if (forceOpen === true || (!isOpen && forceOpen !== false)) {
+    const shouldOpen = forceOpen === true || (!isOpen && forceOpen !== false);
+    if (shouldOpen) {
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
         if (input) {
             input.value = '';
             input.focus();
-            renderSearchResults('');
         }
+        renderSearchResults('');
     } else {
         modal.classList.remove('open');
         document.body.style.overflow = '';
     }
+    const trigger = document.querySelector('.search-btn');
+    if (trigger) trigger.setAttribute('aria-expanded', String(shouldOpen));
 }
 
-function renderSearchResults(query) {
+// Real vaqtda filtrlash — foydalanuvchi yozishi bilan natijalar yangilanadi
+function renderSearchResults(query = '') {
     const container = document.getElementById('searchResults');
     if (!container) return;
 
-    const allProducts = [...PRODUCTS.cameras, ...PRODUCTS.compact, ...PRODUCTS.lenses, ...PRODUCTS.video];
-    const filtered = query
-        ? allProducts.filter(p =>
-            p.name.toLowerCase().includes(query.toLowerCase()) ||
-            p.model.toLowerCase().includes(query.toLowerCase()) ||
-            p.sub.toLowerCase().includes(query.toLowerCase()) ||
-            (CATEGORY_LABELS[p.cat] || '').toLowerCase().includes(query.toLowerCase())
-        )
+    const term = String(query).trim().toLowerCase();
+    const allProducts = getSearchableProducts();
+    const filtered = term
+        ? allProducts.filter(product => [
+            product.name,
+            product.model,
+            product.sub,
+            CATEGORY_LABELS[product.cat] || product.cat,
+        ].join(' ').toLowerCase().includes(term))
         : allProducts;
 
     if (filtered.length === 0) {
-        container.innerHTML = '<div class="search-empty">Mahsulot topilmadi</div>';
+        container.innerHTML = `<div class="search-empty">"${escapeHTML(query)}" bo'yicha mahsulot topilmadi</div>`;
         return;
     }
 
     container.innerHTML = filtered.map(product => `
         <div class="search-result-item" onclick="showProdDetail('${product.id}'); toggleSearch(false)">
-            <div class="search-result-img" style="background-image:url('${product.img}')"></div>
+            <div class="search-result-img"${product.img ? ` style="background-image:url('${product.img}')"` : ''}></div>
             <div class="search-result-info">
                 <div class="search-result-name">${product.name}</div>
                 <div class="search-result-model">${product.model}</div>
                 <div class="search-result-price">${product.price} UZS</div>
             </div>
+            <button class="search-result-add" aria-label="Savatga qo'shish"
+                onclick="event.stopPropagation(); addToCart('${product.id}'); toggleSearch(false);">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg>
+            </button>
         </div>
-    `).join('');
+    `).join('') + `<div class="search-meta">${filtered.length} / ${allProducts.length} mahsulot</div>`;
+}
+
+// Qidiruv inputini ulash (real-time + klaviatura)
+function initSearch() {
+    const searchInput = document.getElementById('searchInput');
+    if (!searchInput) return;
+    searchInput.addEventListener('input', event => renderSearchResults(event.target.value));
+    searchInput.addEventListener('keydown', event => {
+        if (event.key === 'Enter') {
+            const firstResult = document.querySelector('#searchResults .search-result-item');
+            if (firstResult) firstResult.click();
+        } else if (event.key === 'Escape') {
+            toggleSearch(false);
+        }
+    });
 }
 
 // ── PRODUCT DRAWER ──
@@ -515,14 +587,18 @@ document.addEventListener('keydown', event => {
     }
 });
 
-// Search input listener
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            renderSearchResults(e.target.value);
-        });
-    }
+// ── HASH ROUTING (deep-link: #cameras, #faq, #contact ...) ──
+function goPageFromHash() {
+    const hashPage = window.location.hash.replace('#', '').trim();
+    if (!hashPage) return false;
+    if (!document.getElementById(`page-${hashPage}`)) return false;
+    goPage(hashPage);
+    return true;
+}
+
+window.addEventListener('hashchange', () => {
+    const hashPage = window.location.hash.replace('#', '').trim();
+    if (hashPage && document.getElementById(`page-${hashPage}`)) goPage(hashPage);
 });
 
 // ── CURSOR ──
@@ -552,8 +628,21 @@ function observeFadeElements() {
 }
 
 // ── INIT ──
-initGrids();
-observeFadeElements();
-setTimeout(() => {
-    document.querySelectorAll('#page-home .fi').forEach((element, index) => setTimeout(() => element.classList.add('v'), index * 100));
-}, 100);
+function initSite() {
+    initGrids();
+    initSearch();
+    updateCartBadge();
+    if (!goPageFromHash()) {
+        // Hash yo'q — joriy sahifadagi fade-in elementlarni ko'rsatamiz
+        observeFadeElements();
+        setTimeout(() => {
+            document.querySelectorAll('.page.active .fi, .page-section.active .fi').forEach((element, index) => setTimeout(() => element.classList.add('v'), index * 100));
+        }, 100);
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSite);
+} else {
+    initSite();
+}
