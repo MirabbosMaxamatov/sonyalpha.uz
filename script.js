@@ -30,6 +30,7 @@ const PRODUCTS = {
 const NEWS = [
     {
         id: 'sony-zv-e10-ii',
+        productId: 'ilce6600',
         date: '15 Yanvar 2025',
         title: 'Sony ZV-E10 II — Bloggerlar uchun yangi kamera',
         excerpt: 'Sony kompaniyasi ZV-E10 seriyasini yangiladi. Yangi model 4K 60fps, yaxshilangan AF va kattaroq batareya bilan keladi.',
