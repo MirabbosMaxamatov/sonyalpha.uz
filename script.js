@@ -34,7 +34,7 @@ const NEWS = [
         date: '15 Yanvar 2025',
         title: 'Sony ZV-E10 II — Bloggerlar uchun yangi kamera',
         excerpt: 'Sony kompaniyasi ZV-E10 seriyasini yangiladi. Yangi model 4K 60fps, yaxshilangan AF va kattaroq batareya bilan keladi.',
-        img: '' /* rasm yuklang */,
+        img: 'https://store.rambler.ru/news/img/b7d0d4b1b21fe501ba8c69692737cc9e' /* rasm yuklang */,
         imgColor: '#1a2535',
         imgIcon: '📷',
         body: `<p>Sony kompaniyasi kontent yaratuvchilar uchun maxsus mo'ljallangan ZV-E10 seriyasining yangi avlodini taqdim etdi. Yangi Sony ZV-E10 II modeli avvalgi versiyasiga nisbatan sezilarli yaxshilanishlarni o'z ichiga oladi.</p>
@@ -49,7 +49,7 @@ const NEWS = [
         date: '8 Fevral 2025',
         title: 'G Master linzalar yangi kolleksiyasi — 2025',
         excerpt: "Sony G Master seriyasiga uchta yangi linza qo'shildi. 50mm f/1.2, 85mm f/1.4 va 135mm f/1.8 — portrait fotograflari uchun ideal tanlov.",
-        img: '' /* rasm yuklang */,
+        img: 'https://i.pinimg.com/originals/ee/73/95/ee7395700ac7261117febeef8a1d17bc.jpg' /* rasm yuklang */,
         imgColor: '#1a1a2a',
         imgIcon: '🔭',
         body: `<p>2025 yilda Sony G Master seriyasiga uchta yangi ob'ektiv qo'shildi. Bu linzalar professional fotograflar va videograflar uchun mo'ljallangan bo'lib, eng yuqori sifatdagi tasvirni kafolatlaydi.</p>
@@ -64,7 +64,7 @@ const NEWS = [
         date: '1 Mart 2025',
         title: "Trade-In aksiyasi — eski kamerangizni yangi Sony'ga almashtiring",
         excerpt: "Eski Sony kamerangizni olib keling, biz uning qiymatini yangi kamera narxidan ayiramiz. Chegirma miqdori 500,000 UZS dan 3,000,000 UZS gacha.",
-        img: '' /* rasm yuklang */,
+        img: 'https://sonymirrorlesspro.com/wp-content/uploads/2018/11/img_0068-1160x504.jpg' /* rasm yuklang */,
         imgColor: '#1a2a1a',
         imgIcon: '🔄',
         body: `<p>SonyAlpha Toshkent 2025 yilning mart oyidan boshlab Trade-In dasturini ishga tushirdi. Bu dastur orqali siz eski Sony kamerangizni yangi modelga almashtira olasiz.</p>
